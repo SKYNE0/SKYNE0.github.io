@@ -1,0 +1,704 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Hexo+Github+Domain构建自己的个性博客, SKYNE">
+    <meta name="description" content="本文主要讲述下，如何使用Github和Hexo搭建一个静态博客，本文大致分为以下几个部分。
+准备开发环境和工具
+
+创建自己的github page仓库
+
+使用Hexo创建静态博客，并使用主题
+
+提交代码，添加域名解析(可选)
+
+
+1. 准备">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Hexo+Github+Domain构建自己的个性博客 | SKYNE</title>
+    <link rel="icon" type="image/jpeg" href="http://static.skyne.cn/image/logo-150x150.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="container">
+            <div class="nav-wrapper">
+                <div class="brand-logo">
+                    <a href="/" class="waves-effect waves-light">
+                        
+                        <img src="http://static.skyne.cn/logo_ali.png" class="logo-img hide-on-small-only">
+                        
+                        <span class="logo-span">SKYNE</span>
+                    </a>
+                </div>
+                
+
+<a href="#" data-activates="mobile-nav" class="button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a id="toggleSearch" class="waves-effect waves-light">
+            <i id="searchIcon" class="mdi-action-search" title="搜索"></i>
+        </a>
+    </li>
+
+</ul>
+
+<div class="side-nav" id="mobile-nav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="http://static.skyne.cn/logo_ali.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">SKYNE</div>
+        <div class="logo-desc">
+            
+            THERE IS NO FIRE LIKE LUST, NO GRIP LIKE HATE; THERE IS NO NET LIKE DELUSION, NO RIVER LIKE CRAVING.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/skyne0/" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+
+    <div class="social-link">
+    <a href="https://github.com/skyne0/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:520@skyne.cn" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href class="tooltipped" data-tooltip="微信联系我: Sky02040511" data-position="top" data-delay="50">
+        <i class="fa fa-wechat"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1163046964" class="tooltipped" data-tooltip="QQ联系我: 1163046964" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+</div>
+
+            </div>
+        </div>
+
+        
+        <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/skyne0/" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+</header>
+
+
+
+
+
+<div class="bg-cover post-cover" style="background-image: url('http://static.skyne.cn/image/H-480x270.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Hexo+Github+Domain构建自己的个性博客
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Hexo/" target="_blank">
+                                <span class="chip bg-color">Hexo</span>
+                            </a>
+                        
+                            <a href="/tags/Github/" target="_blank">
+                                <span class="chip bg-color">Github</span>
+                            </a>
+                        
+                            <a href="/tags/Domain/" target="_blank">
+                                <span class="chip bg-color">Domain</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Github/" class="post-category" target="_blank">
+                                Github
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-05-17
+                </div>
+
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h5 id="本文主要讲述下，如何使用Github和Hexo搭建一个静态博客，本文大致分为以下几个部分。"><a href="#本文主要讲述下，如何使用Github和Hexo搭建一个静态博客，本文大致分为以下几个部分。" class="headerlink" title="本文主要讲述下，如何使用Github和Hexo搭建一个静态博客，本文大致分为以下几个部分。"></a>本文主要讲述下，如何使用Github和Hexo搭建一个静态博客，本文大致分为以下几个部分。</h5><ol>
+<li><p>准备开发环境和工具</p>
+</li>
+<li><p>创建自己的github page仓库</p>
+</li>
+<li><p>使用Hexo创建静态博客，并使用主题</p>
+</li>
+<li><p>提交代码，添加域名解析(可选)</p>
+</li>
+</ol>
+<h4 id="1-准备开发环境和工具"><a href="#1-准备开发环境和工具" class="headerlink" title="1. 准备开发环境和工具"></a>1. 准备开发环境和工具</h4><h5 id="Hexo依赖Node-js，因此需要先安装Node-js，可前往Node-js的官网下载长期支持版本安装即可"><a href="#Hexo依赖Node-js，因此需要先安装Node-js，可前往Node-js的官网下载长期支持版本安装即可" class="headerlink" title="Hexo依赖Node.js，因此需要先安装Node.js，可前往Node.js的官网下载长期支持版本安装即可"></a>Hexo依赖Node.js，因此需要先安装Node.js，可前往<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js的官网</a>下载长期支持版本安装即可</h5><h5 id="同理还需要安装git，前往git官网下载安装即可"><a href="#同理还需要安装git，前往git官网下载安装即可" class="headerlink" title="同理还需要安装git，前往git官网下载安装即可"></a>同理还需要安装git，前往<a href="https://git-scm.com/" target="_blank" rel="noopener">git官网</a>下载安装即可</h5><h5 id="安装完成后，可以在cmd中测试是否安装成功"><a href="#安装完成后，可以在cmd中测试是否安装成功" class="headerlink" title="安装完成后，可以在cmd中测试是否安装成功"></a>安装完成后，可以在cmd中测试是否安装成功</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">npm</span> -v
+6.4.1
+
+$ <span class="token function">git</span> --version
+<span class="token function">git</span> version 2.20.1.windows.1
+</code></pre>
+<h4 id="2-创建自己的github-page仓库"><a href="#2-创建自己的github-page仓库" class="headerlink" title="2. 创建自己的github page仓库"></a>2. 创建自己的github page仓库</h4><h5 id="github非常有爱，每一个github用户都可以使用自己的用户名创建一个仓库"><a href="#github非常有爱，每一个github用户都可以使用自己的用户名创建一个仓库" class="headerlink" title="github非常有爱，每一个github用户都可以使用自己的用户名创建一个仓库"></a>github非常有爱，每一个github用户都可以使用自己的用户名创建一个仓库</h5><h5 id="该仓库可用于存放静态文件或者其他用途，很多人都是用它来构建一个简单的博客，github-page的官方介绍。"><a href="#该仓库可用于存放静态文件或者其他用途，很多人都是用它来构建一个简单的博客，github-page的官方介绍。" class="headerlink" title="该仓库可用于存放静态文件或者其他用途，很多人都是用它来构建一个简单的博客，github page的官方介绍。"></a>该仓库可用于存放静态文件或者其他用途，很多人都是用它来构建一个简单的博客，github page的<a href="https://pages.github.com/" target="_blank" rel="noopener">官方介绍</a>。</h5><h5 id="如果还没有github账户，可以前往github官网注册"><a href="#如果还没有github账户，可以前往github官网注册" class="headerlink" title="如果还没有github账户，可以前往github官网注册"></a>如果还没有github账户，可以前往<a href="https://github.com/" target="_blank" rel="noopener">github官网</a>注册</h5><h5 id="已有账户的同学和以往创建仓库一样，只不过仓库名必须和自己的用户名一样。"><a href="#已有账户的同学和以往创建仓库一样，只不过仓库名必须和自己的用户名一样。" class="headerlink" title="已有账户的同学和以往创建仓库一样，只不过仓库名必须和自己的用户名一样。"></a>已有账户的同学和以往创建仓库一样，只不过仓库名必须和自己的用户名一样。</h5><h5 id="创建完毕后，你可以使用username-github-io来访问，前提是该仓库非空。"><a href="#创建完毕后，你可以使用username-github-io来访问，前提是该仓库非空。" class="headerlink" title="创建完毕后，你可以使用username.github.io来访问，前提是该仓库非空。"></a>创建完毕后，你可以使用username.github.io来访问，前提是该仓库非空。</h5><h4 id="3-使用Hexo创建静态博客"><a href="#3-使用Hexo创建静态博客" class="headerlink" title="3. 使用Hexo创建静态博客"></a>3. 使用Hexo创建静态博客</h4><h5 id="首先在你想要放置仓库的目录下clone远程仓库，"><a href="#首先在你想要放置仓库的目录下clone远程仓库，" class="headerlink" title="首先在你想要放置仓库的目录下clone远程仓库，"></a>首先在你想要放置仓库的目录下clone远程仓库，</h5><h5 id="进入目录，目录空白处右键选择Git-bash-here选项，进入Git-bash的终端。"><a href="#进入目录，目录空白处右键选择Git-bash-here选项，进入Git-bash的终端。" class="headerlink" title="进入目录，目录空白处右键选择Git bash here选项，进入Git bash的终端。"></a>进入目录，目录空白处右键选择Git bash here选项，进入Git bash的终端。</h5><h5 id="clone远程仓库到本地目录中，命令如右：git-clone-https-github-com-SKYNE0-SKYNE0-github-io"><a href="#clone远程仓库到本地目录中，命令如右：git-clone-https-github-com-SKYNE0-SKYNE0-github-io" class="headerlink" title="clone远程仓库到本地目录中，命令如右：git clone https://github.com/SKYNE0/SKYNE0.github.io"></a>clone远程仓库到本地目录中，命令如右：git clone <a href="https://github.com/SKYNE0/SKYNE0.github.io" target="_blank" rel="noopener">https://github.com/SKYNE0/SKYNE0.github.io</a></h5><h5 id="因为是空目录，所以并没有什么东西。"><a href="#因为是空目录，所以并没有什么东西。" class="headerlink" title="因为是空目录，所以并没有什么东西。"></a>因为是空目录，所以并没有什么东西。</h5><h5 id="接着安装Hexo，并初始化当前目录，命令如下："><a href="#接着安装Hexo，并初始化当前目录，命令如下：" class="headerlink" title="接着安装Hexo，并初始化当前目录，命令如下："></a>接着安装Hexo，并初始化当前目录，命令如下：</h5><pre class=" language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> hexo-cli -g  <span class="token comment" spellcheck="true">#安装Hexo  </span>
+hexo init <span class="token comment" spellcheck="true">#初始化网站   </span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token comment" spellcheck="true"># 解决依赖 </span>
+hexo g <span class="token comment" spellcheck="true">#生成静态网站  </span>
+hexo s <span class="token comment" spellcheck="true">#启动本地服务器</span>
+
+INFO  Start processing
+INFO  Hexo is running at http://localhost:4000 <span class="token keyword">.</span> Press Ctrl+C to stop.
+</code></pre>
+<h5 id="在浏览器打开-http-localhost-4000-便可以看到最简单的一个页面。"><a href="#在浏览器打开-http-localhost-4000-便可以看到最简单的一个页面。" class="headerlink" title="在浏览器打开 http://localhost:4000 便可以看到最简单的一个页面。"></a>在浏览器打开 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 便可以看到最简单的一个页面。</h5><h5 id="执行完init命令后，当前目录会多出很多目录，比如public，source目录等。"><a href="#执行完init命令后，当前目录会多出很多目录，比如public，source目录等。" class="headerlink" title="执行完init命令后，当前目录会多出很多目录，比如public，source目录等。"></a>执行完init命令后，当前目录会多出很多目录，比如public，source目录等。</h5><pre class=" language-bash"><code class="language-bash"><span class="token keyword">.</span>
+├── _admin-config.yml
+├── _config.yml
+├── db.json
+├── node_modules
+├── package-lock.json
+├── package.json
+├── public
+├── scaffolds
+├── <span class="token function">source</span>
+└── themes
+</code></pre>
+<h5 id="下面介绍下怎么创建新文章，创建新页面"><a href="#下面介绍下怎么创建新文章，创建新页面" class="headerlink" title="下面介绍下怎么创建新文章，创建新页面"></a>下面介绍下怎么创建新文章，创建新页面</h5><pre class=" language-bash"><code class="language-bash">hexo new <span class="token string">"文章名"</span> <span class="token comment" spellcheck="true">#新建文章</span>
+hexo new page <span class="token string">"页面名"</span> <span class="token comment" spellcheck="true">#新建页面  </span>
+</code></pre>
+<h5 id="创建完文章或者页面后可以在source-post目录看到，也可以直接在该目录下创建"><a href="#创建完文章或者页面后可以在source-post目录看到，也可以直接在该目录下创建" class="headerlink" title="创建完文章或者页面后可以在source/_post目录看到，也可以直接在该目录下创建"></a>创建完文章或者页面后可以在source/_post目录看到，也可以直接在该目录下创建</h5><h5 id="创建后，可以使用Markdown编辑器或者普通的编辑器编写文章。"><a href="#创建后，可以使用Markdown编辑器或者普通的编辑器编写文章。" class="headerlink" title="创建后，可以使用Markdown编辑器或者普通的编辑器编写文章。"></a>创建后，可以使用Markdown编辑器或者普通的编辑器编写文章。</h5><h5 id="编写完成后，需要执行：hexo-g来生成静态文件，再执行：hexo-s启动服务，刷新浏览器拜年可以看到了。"><a href="#编写完成后，需要执行：hexo-g来生成静态文件，再执行：hexo-s启动服务，刷新浏览器拜年可以看到了。" class="headerlink" title="编写完成后，需要执行：hexo g来生成静态文件，再执行：hexo s启动服务，刷新浏览器拜年可以看到了。"></a>编写完成后，需要执行：hexo g来生成静态文件，再执行：hexo s启动服务，刷新浏览器拜年可以看到了。</h5><h5 id="不使用主题的话，页面过于简单，我们可以使用主题快速改造我们的静态网站。"><a href="#不使用主题的话，页面过于简单，我们可以使用主题快速改造我们的静态网站。" class="headerlink" title="不使用主题的话，页面过于简单，我们可以使用主题快速改造我们的静态网站。"></a>不使用主题的话，页面过于简单，我们可以使用主题快速改造我们的静态网站。</h5><h5 id="Hexo官网上提供了大量的主题供我们使用"><a href="#Hexo官网上提供了大量的主题供我们使用" class="headerlink" title="Hexo官网上提供了大量的主题供我们使用"></a><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo官网</a>上提供了大量的<a href="https://hexo.io/themes/" target="_blank" rel="noopener">主题</a>供我们使用</h5><h5 id="喜欢什么样的主题，可以下载下来后，放置在themes目录下，同时修改根目录下的-config-yml文件使主题生效"><a href="#喜欢什么样的主题，可以下载下来后，放置在themes目录下，同时修改根目录下的-config-yml文件使主题生效" class="headerlink" title="喜欢什么样的主题，可以下载下来后，放置在themes目录下，同时修改根目录下的_config.yml文件使主题生效"></a>喜欢什么样的主题，可以下载下来后，放置在themes目录下，同时修改根目录下的_config.yml文件使主题生效</h5><pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># Extensions</span>
+<span class="token comment" spellcheck="true">## Plugins: https://hexo.io/plugins/</span>
+<span class="token comment" spellcheck="true">## Themes: https://hexo.io/themes/</span>
+theme: hexo-theme-matery <span class="token comment" spellcheck="true">#主题名</span>
+</code></pre>
+<h5 id="重新启动，刷新浏览器，便可以看到效果。"><a href="#重新启动，刷新浏览器，便可以看到效果。" class="headerlink" title="重新启动，刷新浏览器，便可以看到效果。"></a>重新启动，刷新浏览器，便可以看到效果。</h5><h5 id="本文以hexo-theme-matery这个主题为例，更详细的的使用方法，可以前往该主题的github仓库查看"><a href="#本文以hexo-theme-matery这个主题为例，更详细的的使用方法，可以前往该主题的github仓库查看" class="headerlink" title="本文以hexo-theme-matery这个主题为例，更详细的的使用方法，可以前往该主题的github仓库查看"></a>本文以<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank" rel="noopener">hexo-theme-matery</a>这个主题为例，更详细的的使用方法，可以前往该主题的github仓库查看</h5><h5 id="该主题有详细的使用方法，细心学习，相信你也可以很快打造一个个性的静态博客"><a href="#该主题有详细的使用方法，细心学习，相信你也可以很快打造一个个性的静态博客" class="headerlink" title="该主题有详细的使用方法，细心学习，相信你也可以很快打造一个个性的静态博客"></a>该主题有详细的使用方法，细心学习，相信你也可以很快打造一个个性的静态博客</h5><h4 id="4-提交代码，添加域名解析-可选"><a href="#4-提交代码，添加域名解析-可选" class="headerlink" title="4. 提交代码，添加域名解析(可选)"></a>4. 提交代码，添加域名解析(可选)</h4><h5 id="按照主题制作者的修改方法修改成自己满意的程度后，便可以提交到github上，这样就可以随时随地访问了。"><a href="#按照主题制作者的修改方法修改成自己满意的程度后，便可以提交到github上，这样就可以随时随地访问了。" class="headerlink" title="按照主题制作者的修改方法修改成自己满意的程度后，便可以提交到github上，这样就可以随时随地访问了。"></a>按照主题制作者的修改方法修改成自己满意的程度后，便可以提交到github上，这样就可以随时随地访问了。</h5><h5 id="首先安装一个扩展库：npm-install-hexo-deployer-git-–save"><a href="#首先安装一个扩展库：npm-install-hexo-deployer-git-–save" class="headerlink" title="首先安装一个扩展库：npm install hexo-deployer-git –save"></a>首先安装一个扩展库：npm install hexo-deployer-git –save</h5><h5 id="接着配置一下deployer信息，编辑根目录下的-config-yml文件"><a href="#接着配置一下deployer信息，编辑根目录下的-config-yml文件" class="headerlink" title="接着配置一下deployer信息，编辑根目录下的_config.yml文件"></a>接着配置一下deployer信息，编辑根目录下的_config.yml文件</h5><pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># Deployment</span>
+<span class="token comment" spellcheck="true">## Docs: https://hexo.io/docs/deployment.html</span>
+deploy:
+  type: <span class="token function">git</span>
+  repository: git@github.com:skyne0/skyne0.github.io.git
+  branch: master
+</code></pre>
+<h5 id="接着配置本地与远程仓库的ssh-key认证，执行下面的命令："><a href="#接着配置本地与远程仓库的ssh-key认证，执行下面的命令：" class="headerlink" title="接着配置本地与远程仓库的ssh key认证，执行下面的命令："></a>接着配置本地与远程仓库的ssh key认证，执行下面的命令：</h5><pre class=" language-bash"><code class="language-bash">ssh-keygen -t rsa -C <span class="token string">"邮件地址"</span> <span class="token comment" spellcheck="true">#生成新的key文件,邮箱地址为你的Github地址</span>
+接下来一路回车便可
+</code></pre>
+<h5 id="该步骤会创建一个key，在C-Users-username-ssh目录下，其中username指的是系统的用户名，比如我的是skyne，那对应就是：C-Users-skyne-ssh"><a href="#该步骤会创建一个key，在C-Users-username-ssh目录下，其中username指的是系统的用户名，比如我的是skyne，那对应就是：C-Users-skyne-ssh" class="headerlink" title="该步骤会创建一个key，在C:\Users\username.ssh目录下，其中username指的是系统的用户名，比如我的是skyne，那对应就是：C:\Users\skyne.ssh"></a>该步骤会创建一个key，在C:\Users\username.ssh目录下，其中username指的是系统的用户名，比如我的是skyne，那对应就是：C:\Users\skyne.ssh</h5><h5 id="该目录下有id-rsa文件复制里面的内容"><a href="#该目录下有id-rsa文件复制里面的内容" class="headerlink" title="该目录下有id_rsa文件复制里面的内容"></a>该目录下有id_rsa文件复制里面的内容</h5><h5 id="接着打开你github的设置，点击你的头像找到settings，点击后选择SSH-keys-and-GPG-keys。"><a href="#接着打开你github的设置，点击你的头像找到settings，点击后选择SSH-keys-and-GPG-keys。" class="headerlink" title="接着打开你github的设置，点击你的头像找到settings，点击后选择SSH keys and GPG keys。"></a>接着打开你github的设置，点击你的头像找到settings，点击后选择SSH keys and GPG keys。</h5><h5 id="点击New-SSH-key，Title可以随便写，建议有实际意义，Key部分粘贴刚刚复制的id-rsa的内容"><a href="#点击New-SSH-key，Title可以随便写，建议有实际意义，Key部分粘贴刚刚复制的id-rsa的内容" class="headerlink" title="点击New SSH key，Title可以随便写，建议有实际意义，Key部分粘贴刚刚复制的id_rsa的内容"></a>点击New SSH key，Title可以随便写，建议有实际意义，Key部分粘贴刚刚复制的id_rsa的内容</h5><h5 id="保存后，可以测试是否配置正确，终端输入："><a href="#保存后，可以测试是否配置正确，终端输入：" class="headerlink" title="保存后，可以测试是否配置正确，终端输入："></a>保存后，可以测试是否配置正确，终端输入：</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">ssh</span> -T git@github.com
+Hi SKYNE0<span class="token operator">!</span> You've successfully authenticated, but GitHub does not provide shell access.
+</code></pre>
+<h5 id="出现上述信息则代表配置成功，接着执行-hexo-d-部署即可"><a href="#出现上述信息则代表配置成功，接着执行-hexo-d-部署即可" class="headerlink" title="出现上述信息则代表配置成功，接着执行: hexo d 部署即可"></a>出现上述信息则代表配置成功，接着执行: hexo d 部署即可</h5><h5 id="然后浏览器访问username-github-io便可以看到自己博客的样子啦。"><a href="#然后浏览器访问username-github-io便可以看到自己博客的样子啦。" class="headerlink" title="然后浏览器访问username.github.io便可以看到自己博客的样子啦。"></a>然后浏览器访问username.github.io便可以看到自己博客的样子啦。</h5><h5 id="以后则是每次写完文章后都需要手动生成静态文件部署一下。"><a href="#以后则是每次写完文章后都需要手动生成静态文件部署一下。" class="headerlink" title="以后则是每次写完文章后都需要手动生成静态文件部署一下。"></a>以后则是每次写完文章后都需要手动生成静态文件部署一下。</h5><h5 id="下面介绍下如何使用CNAME解析使自己的域名解析到username-github-io上。"><a href="#下面介绍下如何使用CNAME解析使自己的域名解析到username-github-io上。" class="headerlink" title="下面介绍下如何使用CNAME解析使自己的域名解析到username.github.io上。"></a>下面介绍下如何使用CNAME解析使自己的域名解析到username.github.io上。</h5><h5 id="如果没有自己的域名，该步骤可以略过。"><a href="#如果没有自己的域名，该步骤可以略过。" class="headerlink" title="如果没有自己的域名，该步骤可以略过。"></a>如果没有自己的域名，该步骤可以略过。</h5><h5 id="首先前往域名服务商添加一个CNAME解析，比如自己的为"><a href="#首先前往域名服务商添加一个CNAME解析，比如自己的为" class="headerlink" title="首先前往域名服务商添加一个CNAME解析，比如自己的为:"></a>首先前往域名服务商添加一个CNAME解析，比如自己的为:</h5><pre class=" language-bash"><code class="language-bash">主机记录     记录类型  线路类型    记录值           TTL（秒）
+
+www      CNAME         默认    skyne0.github.io    600
+</code></pre>
+<h5 id="这样当访问域名domain时，会被解析skyne0-github-io上。"><a href="#这样当访问域名domain时，会被解析skyne0-github-io上。" class="headerlink" title="这样当访问域名domain时，会被解析skyne0.github.io上。"></a>这样当访问域名domain时，会被解析skyne0.github.io上。</h5><h5 id="github仓库设置中需要添加一个Custom-domain，前往仓库，选择Settings"><a href="#github仓库设置中需要添加一个Custom-domain，前往仓库，选择Settings" class="headerlink" title="github仓库设置中需要添加一个Custom domain，前往仓库，选择Settings"></a>github仓库设置中需要添加一个Custom domain，前往仓库，选择Settings</h5><h5 id="在下面中可以看到Custom-domain，把自己域名解析中添加的主机记录-www-skyne-cn添加进去。"><a href="#在下面中可以看到Custom-domain，把自己域名解析中添加的主机记录-www-skyne-cn添加进去。" class="headerlink" title="在下面中可以看到Custom domain，把自己域名解析中添加的主机记录: www.skyne.cn添加进去。"></a>在下面中可以看到Custom domain，把自己域名解析中添加的主机记录: <a href="http://www.skyne.cn添加进去。" target="_blank" rel="noopener">www.skyne.cn添加进去。</a></h5><h5 id="解析生效大概需要十分钟，稍等片刻，便可以访问自己的域名来查看是否正确跳转到了username-github-io上。"><a href="#解析生效大概需要十分钟，稍等片刻，便可以访问自己的域名来查看是否正确跳转到了username-github-io上。" class="headerlink" title="解析生效大概需要十分钟，稍等片刻，便可以访问自己的域名来查看是否正确跳转到了username.github.io上。"></a>解析生效大概需要十分钟，稍等片刻，便可以访问自己的域名来查看是否正确跳转到了username.github.io上。</h5>
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="http://www.skyne.cn" class="b-link-green">SKYNE</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/05/17/hexo-github-domain-gou-jian-zi-ji-de-ge-xing-bo-ke/" class="b-link-green">Hexo+Github+Domain构建自己的个性博客</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2019/05/17/hexo-github-domain-gou-jian-zi-ji-de-ge-xing-bo-ke/">
+                    <div class="card-image">
+                        
+                        <img src="http://static.skyne.cn/image/H-480x270.jpg" class="responsive-img" alt="Hexo+Github+Domain构建自己的个性博客">
+                        
+                        <span class="card-title">Hexo+Github+Domain构建自己的个性博客</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">本文主要讲述下，如何使用Github和Hexo搭建一个静态博客，本文大致分为以下几个部分。
+准备开发环境和工具
+
+创建自己的github page仓库
+
+使用Hexo创建静态博客，并使用主题
+
+提交代码，添加域名解析(可选)
+
+
+1. 准备</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Github/" class="post-category" target="_blank">
+                                    Github
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Hexo/" target="_blank">
+                        <span class="chip bg-color">Hexo</span>
+                    </a>
+                    
+                    <a href="/tags/Github/" target="_blank">
+                        <span class="chip bg-color">Github</span>
+                    </a>
+                    
+                    <a href="/tags/Domain/" target="_blank">
+                        <span class="chip bg-color">Domain</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/08/07/zai-django-zhong-shi-yong-markdown-pygments/">
+                    <div class="card-image">
+                        
+                        <img src="http://static.skyne.cn/image/P-480x270.jpg" class="responsive-img" alt="在Django中使用Markdown+Pygments">
+                        
+                        <span class="card-title">在Django中使用Markdown+Pygments</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">markdown简单实用，使得我们可以更加专注写作本身，而不用为了文章的段落样式而苦恼。
+如果你还没有用过Markdown，你可以看看他的简单用法，在这里
+在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Django/" class="post-category" target="_blank">
+                                    Django
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Markdown/" target="_blank">
+                        <span class="chip bg-color">Markdown</span>
+                    </a>
+                    
+                    <a href="/tags/Pygments/" target="_blank">
+                        <span class="chip bg-color">Pygments</span>
+                    </a>
+                    
+                    <a href="/tags/Django/" target="_blank">
+                        <span class="chip bg-color">Django</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://skyne0.github.io/" target="_blank">SKYNE</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/skyne0/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:520@skyne.cn" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href class="tooltipped" data-tooltip="微信联系我: Sky02040511" data-position="top" data-delay="50">
+        <i class="fa fa-wechat"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1163046964" class="tooltipped" data-tooltip="QQ联系我: 1163046964" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input" autofocus>
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/js/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
