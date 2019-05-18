@@ -49,11 +49,11 @@
       
         <tags>
             
+            <tag> Django </tag>
+            
             <tag> Markdown </tag>
             
             <tag> Pygments </tag>
-            
-            <tag> Django </tag>
             
         </tags>
       
@@ -78,11 +78,11 @@
       
         <tags>
             
-            <tag> Django </tag>
-            
             <tag> Apache </tag>
             
             <tag> 腾讯云 </tag>
+            
+            <tag> Django </tag>
             
         </tags>
       
