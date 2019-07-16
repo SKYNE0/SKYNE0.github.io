@@ -4,10 +4,10 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="在Django中使用Markdown+Pygments, SKYNE">
-    <meta name="description" content="markdown简单实用，使得我们可以更加专注写作本身，而不用为了文章的段落样式而苦恼。
-如果你还没有用过Markdown，你可以看看他的简单用法，在这里
-在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不">
+    <meta name="keywords" content="Zabbix接入蓝鲸故障自愈实现告警触发自愈动作, SKYNE">
+    <meta name="description" content="0x01 蓝鲸和故障自愈等简介
+腾讯蓝鲸的介绍可以前往官方文档中心,或者这篇文章
+故障自愈是一款实现服务器故障自动处理的解决方案，提升企业服务可用性和降低故障处理的人力投入。通过自动化处理来节省人力投入，通过预定的恢复流程让恢复过程更可靠，">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -284,13 +284,13 @@
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('http://static.skyne.cn/image/P-480x270.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('http://static.skyne.cn/image/Z-480x270.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        在Django中使用Markdown+Pygments
+                        Zabbix接入蓝鲸故障自愈实现告警触发自愈动作
                     </div>
                 </div>
             </div>
@@ -312,16 +312,20 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Markdown/" target="_blank">
-                                <span class="chip bg-color">Markdown</span>
+                            <a href="/tags/腾讯蓝鲸/" target="_blank">
+                                <span class="chip bg-color">腾讯蓝鲸</span>
                             </a>
                         
-                            <a href="/tags/Pygments/" target="_blank">
-                                <span class="chip bg-color">Pygments</span>
+                            <a href="/tags/Zabbix/" target="_blank">
+                                <span class="chip bg-color">Zabbix</span>
                             </a>
                         
-                            <a href="/tags/Django/" target="_blank">
-                                <span class="chip bg-color">Django</span>
+                            <a href="/tags/故障自愈/" target="_blank">
+                                <span class="chip bg-color">故障自愈</span>
+                            </a>
+                        
+                            <a href="/tags/Docker/" target="_blank">
+                                <span class="chip bg-color">Docker</span>
                             </a>
                         
                     </div>
@@ -332,8 +336,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Django/" class="post-category" target="_blank">
-                                Django
+                            <a href="/categories/BlueKing/" class="post-category" target="_blank">
+                                BlueKing
                             </a>
                         
                     </div>
@@ -344,7 +348,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2018-08-07
+                    2019-07-16
                 </div>
 
                 
@@ -360,32 +364,93 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="markdown简单实用，使得我们可以更加专注写作本身，而不用为了文章的段落样式而苦恼。"><a href="#markdown简单实用，使得我们可以更加专注写作本身，而不用为了文章的段落样式而苦恼。" class="headerlink" title="markdown简单实用，使得我们可以更加专注写作本身，而不用为了文章的段落样式而苦恼。"></a>markdown简单实用，使得我们可以更加专注写作本身，而不用为了文章的段落样式而苦恼。</h4><hr>
-<h4 id="如果你还没有用过Markdown，你可以看看他的简单用法，在这里"><a href="#如果你还没有用过Markdown，你可以看看他的简单用法，在这里" class="headerlink" title="如果你还没有用过Markdown，你可以看看他的简单用法，在这里"></a>如果你还没有用过Markdown，你可以看看他的简单用法，<a href="https://www.appinn.com/markdown/" target="_blank" rel="noopener">在这里</a></h4><hr>
-<h4 id="在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不同主题的代码高亮。"><a href="#在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不同主题的代码高亮。" class="headerlink" title="在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不同主题的代码高亮。"></a>在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不同主题的代码高亮。</h4><hr>
-<h4 id="首先安装Markdown和pygments，前者使得文章支持Markdown语法，后者可以以css的形式来美化代码区"><a href="#首先安装Markdown和pygments，前者使得文章支持Markdown语法，后者可以以css的形式来美化代码区" class="headerlink" title="首先安装Markdown和pygments，前者使得文章支持Markdown语法，后者可以以css的形式来美化代码区"></a>首先安装Markdown和pygments，前者使得文章支持Markdown语法，后者可以以css的形式来美化代码区</h4><hr>
-<pre><code>pip install markdown
-pip install pygments
-</code></pre><h4 id="接下来在需要使用Markdown的地方加上如下代码。我们以article-content为例。"><a href="#接下来在需要使用Markdown的地方加上如下代码。我们以article-content为例。" class="headerlink" title="接下来在需要使用Markdown的地方加上如下代码。我们以article.content为例。"></a>接下来在需要使用Markdown的地方加上如下代码。我们以article.content为例。</h4><hr>
-<pre><code>#记得导入第三方包
-import markdown
-
-article.content = markdown.markdown(article.content,
-                              extensions=[&#39;markdown.extensions.fenced_code&#39;,
-                                 &#39;markdown.extensions.extra&#39;,
-                                 &#39;markdown.extensions.codehilite&#39;,
-                                 &#39;markdown.extensions.toc&#39;,
-                              ])
-</code></pre><h4 id="这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，"><a href="#这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，" class="headerlink" title="这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，"></a>这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，</h4><hr>
-<h4 id="其中，codehilite是语法高亮扩展，其他的两个参数。我也不是太明白。"><a href="#其中，codehilite是语法高亮扩展，其他的两个参数。我也不是太明白。" class="headerlink" title="其中，codehilite是语法高亮扩展，其他的两个参数。我也不是太明白。"></a>其中，codehilite是语法高亮扩展，其他的两个参数。我也不是太明白。</h4><hr>
-<h4 id="接着，在模板中就可以使用来引入到模板中。加上过滤safe会告诉Django这是安全的，你不需要做什么。"><a href="#接着，在模板中就可以使用来引入到模板中。加上过滤safe会告诉Django这是安全的，你不需要做什么。" class="headerlink" title="接着，在模板中就可以使用来引入到模板中。加上过滤safe会告诉Django这是安全的，你不需要做什么。"></a>接着，在模板中就可以使用来引入到模板中。加上过滤safe会告诉Django这是安全的，你不需要做什么。</h4><hr>
-<h4 id="这样虽然可以使用Markdown了，但我们文章中的代码区并不会被渲染。会跟普通文本一样，可能比普通文本还难看。"><a href="#这样虽然可以使用Markdown了，但我们文章中的代码区并不会被渲染。会跟普通文本一样，可能比普通文本还难看。" class="headerlink" title="这样虽然可以使用Markdown了，但我们文章中的代码区并不会被渲染。会跟普通文本一样，可能比普通文本还难看。"></a>这样虽然可以使用Markdown了，但我们文章中的代码区并不会被渲染。会跟普通文本一样，可能比普通文本还难看。</h4><hr>
-<h4 id="这时，Pygments就可以派上用场了，上面我们已经安装过它了，所以我们直接说怎么用。"><a href="#这时，Pygments就可以派上用场了，上面我们已经安装过它了，所以我们直接说怎么用。" class="headerlink" title="这时，Pygments就可以派上用场了，上面我们已经安装过它了，所以我们直接说怎么用。"></a>这时，Pygments就可以派上用场了，上面我们已经安装过它了，所以我们直接说怎么用。</h4><hr>
-<h4 id="首先在Django应用的static-css-目录下打开终端，也就是静态文件目录，根据自己实际目录情况，输入下面的命令："><a href="#首先在Django应用的static-css-目录下打开终端，也就是静态文件目录，根据自己实际目录情况，输入下面的命令：" class="headerlink" title="首先在Django应用的static/css/目录下打开终端，也就是静态文件目录，根据自己实际目录情况，输入下面的命令："></a>首先在Django应用的static/css/目录下打开终端，也就是静态文件目录，根据自己实际目录情况，输入下面的命令：</h4><pre><code>pygmentize -S monokai -f html -a .codehilite &gt; monokia.css
-</code></pre><h4 id="命令执行完毕，你会发现该目录下多了个monokai-css的文件。先解释下上面的命令。"><a href="#命令执行完毕，你会发现该目录下多了个monokai-css的文件。先解释下上面的命令。" class="headerlink" title="命令执行完毕，你会发现该目录下多了个monokai.css的文件。先解释下上面的命令。"></a>命令执行完毕，你会发现该目录下多了个monokai.css的文件。先解释下上面的命令。</h4><hr>
-<h4 id="S-指定主题，跟主题名，有monokai，github-default等等，我比较喜欢monokai"><a href="#S-指定主题，跟主题名，有monokai，github-default等等，我比较喜欢monokai" class="headerlink" title="-S 指定主题，跟主题名，有monokai，github, default等等，我比较喜欢monokai"></a>-S 指定主题，跟主题名，有monokai，github, default等等，我比较喜欢monokai</h4><hr>
-<h4 id="接着在模板中引入此文件即可。这样代码区就会被渲染了，就如本文中的一样。"><a href="#接着在模板中引入此文件即可。这样代码区就会被渲染了，就如本文中的一样。" class="headerlink" title="接着在模板中引入此文件即可。这样代码区就会被渲染了，就如本文中的一样。"></a>接着在模板中引入此文件即可。这样代码区就会被渲染了，就如本文中的一样。</h4><hr>
-
+                <h3 id="0x01-蓝鲸和故障自愈等简介"><a href="#0x01-蓝鲸和故障自愈等简介" class="headerlink" title="0x01 蓝鲸和故障自愈等简介"></a>0x01 蓝鲸和故障自愈等简介</h3><ul>
+<li>腾讯蓝鲸的介绍可以前往<a href="https://docs.bk.tencent.com/introduction/" target="_blank" rel="noopener">官方文档中心</a>,或者<a href="https://www.skyne.cn/2019/07/16/jian-shu-teng-xun-lan-jing-zi-dong-hua-yun-wei-ping-tai/">这篇文章</a></li>
+<li>故障自愈是一款实现服务器故障自动处理的解决方案，提升企业服务可用性和降低故障处理的人力投入。通过自动化处理来节省人力投入，通过预定的恢复流程让恢复过程更可靠，通过并行分析达到更快的故障定位和恢复，最终减少业务损失的风险。</li>
+<li>Zabbix是一个基于WEB界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案</li>
+</ul>
+<h3 id="0x02-实现思路"><a href="#0x02-实现思路" class="headerlink" title="0x02 实现思路"></a>0x02 实现思路</h3><ul>
+<li>1.Zabbix通过模板设置触发器，监控目标主机的各项指标</li>
+<li>2.目标主机的触发告警时，Zabbix通过调用Action发送告警信息到故障自愈</li>
+<li>3.故障自愈匹配告警内容，符合设置的自愈套餐时，开始执行自愈套餐</li>
+<li>4.故障自愈依据事先设定的自愈套餐，调用作业平台在目标主机上执行作业完成自愈</li>
+</ul>
+<h3 id="0x03-环境准备"><a href="#0x03-环境准备" class="headerlink" title="0x03 环境准备"></a>0x03 环境准备</h3><ul>
+<li>Zabbix4.0，使用Docker部署，也可采用其他版本。</li>
+<li>蓝鲸社区版或者企业版，故障自愈SaaS。</li>
+<li>一台linux主机A，需要安装Zabbix-Agent和蓝鲸的Agent。</li>
+</ul>
+<h3 id="0x04-Docker部署Zabbix-server和Zabbix-agent"><a href="#0x04-Docker部署Zabbix-server和Zabbix-agent" class="headerlink" title="0x04 Docker部署Zabbix-server和Zabbix-agent"></a>0x04 Docker部署Zabbix-server和Zabbix-agent</h3><ul>
+<li>默认已经安装好Docker了，不再累述怎么安装Docker了，官方文档有主流Linux发行版本的<a href="https://docs.docker.com/" target="_blank" rel="noopener">安装文档</a></li>
+<li>第一步部署一个MySQL5.7的容器，参考命令如下：<pre><code>docker run –name zabbix-mysql -t \
+   -e MYSQL_DATABASE=&quot;zabbix&quot; \
+   -e MYSQL_USER=&quot;zabbix&quot; \
+   -e MYSQL_PASSWORD=&quot;zabbix@123&quot; \
+   -e MYSQL_ROOT_PASSWORD=&quot;root@123&quot; \
+   -v /etc/localtime:/etc/localtime   \
+   -v /data/zabbix/mysql:/var/lib/mysql \
+   -d mysql:5.7
+# 上面的参数熟悉的docker的很好理解，不再解释
+</code></pre></li>
+<li>第二步部署一个Zabbix-server的容器，参考命令如下：<pre><code>docker run --name zabbix-server -t \
+    -e DB_SERVER_HOST=&quot;zabbix-mysql&quot; \
+    -e MYSQL_DATABASE=&quot;zabbix&quot; \
+    -e MYSQL_USER=&quot;zabbix&quot; \
+    -e MYSQL_PASSWORD=&quot;zabbix@123&quot; \
+    -e MYSQL_ROOT_PASSWORD=&quot;root@123&quot; \
+    -v /etc/localtime:/etc/localtime  \
+    --link zabbix-mysql:mysql \
+    -p 10051:10051 \
+    -d zabbix/zabbix-server-mysql:centos-4.0-latest
+# DB_SERVER_HOST为MySQL容器名，在zabbix-server容器的hosts文件会记录对应关系。
+# --link zabbix-mysql:mysql 这个会链接两个容器，使其可以相互通信。
+</code></pre></li>
+<li>第三步部署一个Zabbix-web的容器，可以选择Nginx或者Apache类型的都可以，参考命令如下：<pre><code>docker run --name zabbix-web -t \
+    -e DB_SERVER_HOST=&quot;zabbix-web&quot; \
+    -e MYSQL_DATABASE=&quot;zabbix&quot; \
+    -e MYSQL_USER=&quot;zabbix&quot; \
+    -e MYSQL_PASSWORD=&quot;zabbix@123&quot; \
+    -e MYSQL_ROOT_PASSWORD=&quot;root@123&quot; \
+    -v /etc/localtime:/etc/localtime   \
+    --link zabbix-mysql:mysql \
+    --link zabbix-server:zabbix-server\
+    -p 4080:80 \
+    -d zabbix/zabbix-web-nginx-mysql:centos-4.0-latest
+# 上述皆采用了centos类型版本4.0的Zabbix，也可采用其他OS类型和版本的Zabbix，但需注意要保持版本一致。
+</code></pre></li>
+<li>不出意外的话，此时访问IP：4080端口便可以进入到Zabbix的登录界面，默认的账户密码是Admin，zabbix。</li>
+<li>如果并不能进行访问，请检查三个容器是否运行正常，参考命令如下：<pre><code>[root@monitor01 ~]# docker ps -a
+CONTAINER ID        IMAGE                                             COMMAND                  CREATED           STATUS            
+738b3b27d24e        zabbix/zabbix-web-nginx-mysql:centos-4.0-latest   &quot;docker-entrypoint.sh&quot;   4 weeks ago       Up 6 hours   0.0.0.0:4080-&gt;80     
+zabbix-web-nginx-mysql
+18fec4385535        zabbix/zabbix-server-mysql:centos-4.0-latest      &quot;/sbin/tini -- /us...&quot;   4 weeks ago       Up 6 hours 0.0.0.0:10051-&gt;10051/tcp 
+zabbix-server
+72b462627893        mysql:5.7                                          &quot;docker-entrypoint...&quot;   4 weeks ago       Up 6 hours   0.0.0.0:3306-&gt;3306/tcp
+zabbix-mysql
+# 上述输出受格式限制有删减
+# 如果有容器处于 Exited 状态，请查看容器日志输出，排除错误后继续。查看日志参考命令：
+docker logs -f name/id
+eg: docker logs -f zabbix-mysql
+</code></pre></li>
+<li>Zabbix服务端和主机A都安装zabbix-agent，并启动</li>
+<li>前往Zabbix的官网下载与容器版本相对应的Zabbix的Agent，<a href="https://www.zabbix.com/download_agents" target="_blank" rel="noopener">下载地址</a></li>
+<li>以CentOS7.2讲一下如何安装Zabbix-agent，默认已经下载好了Agent的rpm安装包,参考命令如下：<pre><code>rpm -ivh ./zabbix-agent-4.2.3-2.el7.x86_64.rpm
+# 修改Agent的配置文件
+vim /etc/zabbix/zabbix_agentd.conf
+# 修改Server ServerActive字段为Zabbix-server的IP
+# 修改Hostname字段为该主机的自身IP
+# 修改完毕后启动Zabbix-agent
+systemctl start zabbix-agent
+systemctl enable zabbix-agent
+</code></pre></li>
+<li>接着前往Zabbix的网页端，添加Agent。</li>
+<li><p>浏览器中打开Zabbix-server主机IP：4080,进入仪表盘，选择配置，选择主机，点击创建主机。如下图所示：<br><img src="http://github.skyne.cn/zabbix/zabbix_host.png" alt><br><img src="http://github.skyne.cn/zabbix/zabbix_host2.png" alt></p>
+</li>
+<li><p>配置好Agent端后，稍等便可便可以在Agent的列表中可用性变成绿色，代表正常。如果为红色，则需要排查出错原因。</p>
+</li>
+<li>至此，Zabbix-server和agent便都安装完毕，运行正常，接下来便需要把Zabbix接入蓝鲸的故障自愈之中。</li>
+</ul>
+<h3 id="未完待续。。。。。。"><a href="#未完待续。。。。。。" class="headerlink" title="未完待续。。。。。。"></a>未完待续。。。。。。</h3>
             </div>
             <hr>
 
@@ -408,7 +473,7 @@ article.content = markdown.markdown(article.content,
                     </span>
                     <a href="http://www.skyne.cn" class="b-link-green">SKYNE</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2018/08/07/zai-django-zhong-shi-yong-markdown-pygments/" class="b-link-green">在Django中使用Markdown+Pygments</a>
+                    <a href="/2019/07/16/zabbix-jie-ru-lan-jing-gu-zhang-zi-yu-shi-xian-gao-jing-hong-fa-zi-yu-dong-zuo/" class="b-link-green">Zabbix接入蓝鲸故障自愈实现告警触发自愈动作</a>
                 </p>
             </div>
         </div>
@@ -431,57 +496,55 @@ article.content = markdown.markdown(article.content,
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2019/05/17/hexo-github-domain-gou-jian-zi-ji-de-ge-xing-bo-ke/">
+                <a href="/2019/07/16/zabbix-jie-ru-lan-jing-gu-zhang-zi-yu-shi-xian-gao-jing-hong-fa-zi-yu-dong-zuo/">
                     <div class="card-image">
                         
-                        <img src="http://static.skyne.cn/image/I-480x270.jpg" class="responsive-img" alt="Hexo+Github+Domain构建自己的个性博客">
+                        <img src="http://static.skyne.cn/image/Z-480x270.jpg" class="responsive-img" alt="Zabbix接入蓝鲸故障自愈实现告警触发自愈动作">
                         
-                        <span class="card-title">Hexo+Github+Domain构建自己的个性博客</span>
+                        <span class="card-title">Zabbix接入蓝鲸故障自愈实现告警触发自愈动作</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文主要讲述下，如何使用Github和Hexo搭建一个静态博客，本文大致分为以下几个部分。
-准备开发环境和工具
-
-创建自己的github page仓库
-
-使用Hexo创建静态博客，并使用主题
-
-提交代码，添加域名解析(可选)
-
-
-1. 准备</div>
+                    <div class="summary">0x01 蓝鲸和故障自愈等简介
+腾讯蓝鲸的介绍可以前往官方文档中心,或者这篇文章
+故障自愈是一款实现服务器故障自动处理的解决方案，提升企业服务可用性和降低故障处理的人力投入。通过自动化处理来节省人力投入，通过预定的恢复流程让恢复过程更可靠，</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-16
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Github/" class="post-category" target="_blank">
-                                    Github
+                            <a href="/categories/BlueKing/" class="post-category" target="_blank">
+                                    BlueKing
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Hexo/" target="_blank">
-                        <span class="chip bg-color">Hexo</span>
+                    <a href="/tags/腾讯蓝鲸/" target="_blank">
+                        <span class="chip bg-color">腾讯蓝鲸</span>
                     </a>
                     
-                    <a href="/tags/Github/" target="_blank">
-                        <span class="chip bg-color">Github</span>
+                    <a href="/tags/Zabbix/" target="_blank">
+                        <span class="chip bg-color">Zabbix</span>
                     </a>
                     
-                    <a href="/tags/Domain/" target="_blank">
-                        <span class="chip bg-color">Domain</span>
+                    <a href="/tags/故障自愈/" target="_blank">
+                        <span class="chip bg-color">故障自愈</span>
+                    </a>
+                    
+                    <a href="/tags/Docker/" target="_blank">
+                        <span class="chip bg-color">Docker</span>
                     </a>
                     
                 </div>
@@ -495,29 +558,28 @@ article.content = markdown.markdown(article.content,
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/07/07/teng-xun-yun-shen-qing-ssl-zheng-shu-bing-pei-zhi-apache-fu-wu-qi-centos7/">
+                <a href="/2019/07/16/jian-shu-teng-xun-lan-jing-zi-dong-hua-yun-wei-ping-tai/">
                     <div class="card-image">
                         
-                        <img src="http://static.skyne.cn/image/T-480x270.jpg" class="responsive-img" alt="腾讯云申请SSL证书并配置Apache服务器(Centos7)">
+                        <img src="http://static.skyne.cn/image/T-480x270.jpg" class="responsive-img" alt="简述腾讯蓝鲸自动化运维平台">
                         
-                        <span class="card-title">腾讯云申请SSL证书并配置Apache服务器(Centos7)</span>
+                        <span class="card-title">简述腾讯蓝鲸自动化运维平台</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">在腾讯云申请SSL证书并配置Apache服务器
-使用SSL可以避免很多问题，关于SSL的介绍，看这里
-因为自己的主机使用的是腾讯云 的，所以也就选择了在腾讯云购买SSL证书，他们有免费的，可以直接申请。其他的云服务商应该也是如此。
-申请非常</div>
+                    <div class="summary">0x01 腾讯蓝鲸简介？&lt;官方解释&gt;
+蓝鲸智云，简称蓝鲸，是腾讯游戏运营部“腾讯智营”下的一个子品牌。它是一套基于PaaS的技术解决方案，
+提供了完善的前后台开发框架、调度引擎、公共组件等模块，帮助业务的产品和技术人员快速构建低</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-07-07
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Django/" class="post-category" target="_blank">
-                                    Django
+                            <a href="/categories/BlueKing/" class="post-category" target="_blank">
+                                    BlueKing
                                 </a>
                             
                             
@@ -527,16 +589,16 @@ article.content = markdown.markdown(article.content,
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Django/" target="_blank">
-                        <span class="chip bg-color">Django</span>
+                    <a href="/tags/腾讯蓝鲸/" target="_blank">
+                        <span class="chip bg-color">腾讯蓝鲸</span>
                     </a>
                     
-                    <a href="/tags/Apache/" target="_blank">
-                        <span class="chip bg-color">Apache</span>
+                    <a href="/tags/自动化运维/" target="_blank">
+                        <span class="chip bg-color">自动化运维</span>
                     </a>
                     
-                    <a href="/tags/腾讯云/" target="_blank">
-                        <span class="chip bg-color">腾讯云</span>
+                    <a href="/tags/DevOps/" target="_blank">
+                        <span class="chip bg-color">DevOps</span>
                     </a>
                     
                 </div>

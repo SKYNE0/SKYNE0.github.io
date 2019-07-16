@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>Zabbix接入蓝鲸故障自愈实现告警触发自愈动作</title>
+      <link href="/2019/07/16/zabbix-jie-ru-lan-jing-gu-zhang-zi-yu-shi-xian-gao-jing-hong-fa-zi-yu-dong-zuo/"/>
+      <url>/2019/07/16/zabbix-jie-ru-lan-jing-gu-zhang-zi-yu-shi-xian-gao-jing-hong-fa-zi-yu-dong-zuo/</url>
+      
+        <content type="html"><![CDATA[<h3 id="0x01-蓝鲸和故障自愈等简介"><a href="#0x01-蓝鲸和故障自愈等简介" class="headerlink" title="0x01 蓝鲸和故障自愈等简介"></a>0x01 蓝鲸和故障自愈等简介</h3><ul><li>腾讯蓝鲸的介绍可以前往<a href="https://docs.bk.tencent.com/introduction/" target="_blank" rel="noopener">官方文档中心</a>,或者<a href="https://www.skyne.cn/2019/07/16/jian-shu-teng-xun-lan-jing-zi-dong-hua-yun-wei-ping-tai/">这篇文章</a></li><li>故障自愈是一款实现服务器故障自动处理的解决方案，提升企业服务可用性和降低故障处理的人力投入。通过自动化处理来节省人力投入，通过预定的恢复流程让恢复过程更可靠，通过并行分析达到更快的故障定位和恢复，最终减少业务损失的风险。</li><li>Zabbix是一个基于WEB界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案</li></ul><h3 id="0x02-实现思路"><a href="#0x02-实现思路" class="headerlink" title="0x02 实现思路"></a>0x02 实现思路</h3><ul><li>1.Zabbix通过模板设置触发器，监控目标主机的各项指标</li><li>2.目标主机的触发告警时，Zabbix通过调用Action发送告警信息到故障自愈</li><li>3.故障自愈匹配告警内容，符合设置的自愈套餐时，开始执行自愈套餐</li><li>4.故障自愈依据事先设定的自愈套餐，调用作业平台在目标主机上执行作业完成自愈</li></ul><h3 id="0x03-环境准备"><a href="#0x03-环境准备" class="headerlink" title="0x03 环境准备"></a>0x03 环境准备</h3><ul><li>Zabbix4.0，使用Docker部署，也可采用其他版本。</li><li>蓝鲸社区版或者企业版，故障自愈SaaS。</li><li>一台linux主机A，需要安装Zabbix-Agent和蓝鲸的Agent。</li></ul><h3 id="0x04-Docker部署Zabbix-server和Zabbix-agent"><a href="#0x04-Docker部署Zabbix-server和Zabbix-agent" class="headerlink" title="0x04 Docker部署Zabbix-server和Zabbix-agent"></a>0x04 Docker部署Zabbix-server和Zabbix-agent</h3><ul><li>默认已经安装好Docker了，不再累述怎么安装Docker了，官方文档有主流Linux发行版本的<a href="https://docs.docker.com/" target="_blank" rel="noopener">安装文档</a></li><li>第一步部署一个MySQL5.7的容器，参考命令如下：<pre><code>docker run –name zabbix-mysql -t \   -e MYSQL_DATABASE=&quot;zabbix&quot; \   -e MYSQL_USER=&quot;zabbix&quot; \   -e MYSQL_PASSWORD=&quot;zabbix@123&quot; \   -e MYSQL_ROOT_PASSWORD=&quot;root@123&quot; \   -v /etc/localtime:/etc/localtime   \   -v /data/zabbix/mysql:/var/lib/mysql \   -d mysql:5.7# 上面的参数熟悉的docker的很好理解，不再解释</code></pre></li><li>第二步部署一个Zabbix-server的容器，参考命令如下：<pre><code>docker run --name zabbix-server -t \    -e DB_SERVER_HOST=&quot;zabbix-mysql&quot; \    -e MYSQL_DATABASE=&quot;zabbix&quot; \    -e MYSQL_USER=&quot;zabbix&quot; \    -e MYSQL_PASSWORD=&quot;zabbix@123&quot; \    -e MYSQL_ROOT_PASSWORD=&quot;root@123&quot; \    -v /etc/localtime:/etc/localtime  \    --link zabbix-mysql:mysql \    -p 10051:10051 \    -d zabbix/zabbix-server-mysql:centos-4.0-latest# DB_SERVER_HOST为MySQL容器名，在zabbix-server容器的hosts文件会记录对应关系。# --link zabbix-mysql:mysql 这个会链接两个容器，使其可以相互通信。</code></pre></li><li>第三步部署一个Zabbix-web的容器，可以选择Nginx或者Apache类型的都可以，参考命令如下：<pre><code>docker run --name zabbix-web -t \    -e DB_SERVER_HOST=&quot;zabbix-web&quot; \    -e MYSQL_DATABASE=&quot;zabbix&quot; \    -e MYSQL_USER=&quot;zabbix&quot; \    -e MYSQL_PASSWORD=&quot;zabbix@123&quot; \    -e MYSQL_ROOT_PASSWORD=&quot;root@123&quot; \    -v /etc/localtime:/etc/localtime   \    --link zabbix-mysql:mysql \    --link zabbix-server:zabbix-server\    -p 4080:80 \    -d zabbix/zabbix-web-nginx-mysql:centos-4.0-latest# 上述皆采用了centos类型版本4.0的Zabbix，也可采用其他OS类型和版本的Zabbix，但需注意要保持版本一致。</code></pre></li><li>不出意外的话，此时访问IP：4080端口便可以进入到Zabbix的登录界面，默认的账户密码是Admin，zabbix。</li><li>如果并不能进行访问，请检查三个容器是否运行正常，参考命令如下：<pre><code>[root@monitor01 ~]# docker ps -aCONTAINER ID        IMAGE                                             COMMAND                  CREATED           STATUS            738b3b27d24e        zabbix/zabbix-web-nginx-mysql:centos-4.0-latest   &quot;docker-entrypoint.sh&quot;   4 weeks ago       Up 6 hours   0.0.0.0:4080-&gt;80     zabbix-web-nginx-mysql18fec4385535        zabbix/zabbix-server-mysql:centos-4.0-latest      &quot;/sbin/tini -- /us...&quot;   4 weeks ago       Up 6 hours 0.0.0.0:10051-&gt;10051/tcp zabbix-server72b462627893        mysql:5.7                                          &quot;docker-entrypoint...&quot;   4 weeks ago       Up 6 hours   0.0.0.0:3306-&gt;3306/tcpzabbix-mysql# 上述输出受格式限制有删减# 如果有容器处于 Exited 状态，请查看容器日志输出，排除错误后继续。查看日志参考命令：docker logs -f name/ideg: docker logs -f zabbix-mysql</code></pre></li><li>Zabbix服务端和主机A都安装zabbix-agent，并启动</li><li>前往Zabbix的官网下载与容器版本相对应的Zabbix的Agent，<a href="https://www.zabbix.com/download_agents" target="_blank" rel="noopener">下载地址</a></li><li>以CentOS7.2讲一下如何安装Zabbix-agent，默认已经下载好了Agent的rpm安装包,参考命令如下：<pre><code>rpm -ivh ./zabbix-agent-4.2.3-2.el7.x86_64.rpm# 修改Agent的配置文件vim /etc/zabbix/zabbix_agentd.conf# 修改Server ServerActive字段为Zabbix-server的IP# 修改Hostname字段为该主机的自身IP# 修改完毕后启动Zabbix-agentsystemctl start zabbix-agentsystemctl enable zabbix-agent</code></pre></li><li>接着前往Zabbix的网页端，添加Agent。</li><li><p>浏览器中打开Zabbix-server主机IP：4080,进入仪表盘，选择配置，选择主机，点击创建主机。如下图所示：<br><img src="http://github.skyne.cn/zabbix/zabbix_host.png" alt><br><img src="http://github.skyne.cn/zabbix/zabbix_host2.png" alt></p></li><li><p>配置好Agent端后，稍等便可便可以在Agent的列表中可用性变成绿色，代表正常。如果为红色，则需要排查出错原因。</p></li><li>至此，Zabbix-server和agent便都安装完毕，运行正常，接下来便需要把Zabbix接入蓝鲸的故障自愈之中。</li></ul><h3 id="未完待续。。。。。。"><a href="#未完待续。。。。。。" class="headerlink" title="未完待续。。。。。。"></a>未完待续。。。。。。</h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> BlueKing </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 腾讯蓝鲸 </tag>
+            
+            <tag> Zabbix </tag>
+            
+            <tag> 故障自愈 </tag>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>简述腾讯蓝鲸自动化运维平台</title>
       <link href="/2019/07/16/jian-shu-teng-xun-lan-jing-zi-dong-hua-yun-wei-ping-tai/"/>
       <url>/2019/07/16/jian-shu-teng-xun-lan-jing-zi-dong-hua-yun-wei-ping-tai/</url>
@@ -78,11 +109,11 @@
       
         <tags>
             
-            <tag> Django </tag>
-            
             <tag> Markdown </tag>
             
             <tag> Pygments </tag>
+            
+            <tag> Django </tag>
             
         </tags>
       
@@ -107,11 +138,11 @@
       
         <tags>
             
+            <tag> Django </tag>
+            
             <tag> Apache </tag>
             
             <tag> 腾讯云 </tag>
-            
-            <tag> Django </tag>
             
         </tags>
       
