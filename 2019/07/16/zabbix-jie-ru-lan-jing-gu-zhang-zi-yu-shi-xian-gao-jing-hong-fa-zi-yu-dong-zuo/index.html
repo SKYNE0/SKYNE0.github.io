@@ -366,8 +366,8 @@
             <div id="articleContent">
                 <h3 id="0x01-蓝鲸和故障自愈等简介"><a href="#0x01-蓝鲸和故障自愈等简介" class="headerlink" title="0x01 蓝鲸和故障自愈等简介"></a>0x01 蓝鲸和故障自愈等简介</h3><ul>
 <li>腾讯蓝鲸的介绍可以前往<a href="https://docs.bk.tencent.com/introduction/" target="_blank" rel="noopener">官方文档中心</a>,或者<a href="https://www.skyne.cn/2019/07/16/jian-shu-teng-xun-lan-jing-zi-dong-hua-yun-wei-ping-tai/">这篇文章</a></li>
-<li>故障自愈是一款实现服务器故障自动处理的解决方案，提升企业服务可用性和降低故障处理的人力投入。通过自动化处理来节省人力投入，通过预定的恢复流程让恢复过程更可靠，通过并行分析达到更快的故障定位和恢复，最终减少业务损失的风险。</li>
-<li>Zabbix是一个基于WEB界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案</li>
+<li>故障自愈是一款实现服务器故障自动处理的解决方案，提升企业服务可用性和降低故障处理的人力投入。通过自动化处理来节省人力投入，通过预定的恢复流程让恢复过程更可靠，通过并行分析达到更快的故障定位和恢复，最终减少业务损失的风险。更详细的说明请前往<a href="https://docs.bk.tencent.com/fta/" target="_blank" rel="noopener">故障自愈文档中心</a></li>
+<li>Zabbix是一个基于WEB界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案,更详细的说明请前往<a href="https://www.zabbix.com/manuals" target="_blank" rel="noopener">Zabbix文档中心</a></li>
 </ul>
 <h3 id="0x02-实现思路"><a href="#0x02-实现思路" class="headerlink" title="0x02 实现思路"></a>0x02 实现思路</h3><ul>
 <li>1.Zabbix通过模板设置触发器，监控目标主机的各项指标</li>
@@ -416,6 +416,7 @@
     --link zabbix-server:zabbix-server\
     -p 4080:80 \
     -d zabbix/zabbix-web-nginx-mysql:centos-4.0-latest
+#  在这里因为80端口被占用了，所以使用了4080这个端口，可根据自己的实际情况修改。
 # 上述皆采用了centos类型版本4.0的Zabbix，也可采用其他OS类型和版本的Zabbix，但需注意要保持版本一致。
 </code></pre></li>
 <li>不出意外的话，此时访问IP：4080端口便可以进入到Zabbix的登录界面，默认的账户密码是Admin，zabbix。</li>
@@ -450,7 +451,125 @@ systemctl enable zabbix-agent
 </li>
 <li>至此，Zabbix-server和agent便都安装完毕，运行正常，接下来便需要把Zabbix接入蓝鲸的故障自愈之中。</li>
 </ul>
-<h3 id="未完待续。。。。。。"><a href="#未完待续。。。。。。" class="headerlink" title="未完待续。。。。。。"></a>未完待续。。。。。。</h3>
+<h3 id="0x05-Zabbix接入蓝鲸故障自愈"><a href="#0x05-Zabbix接入蓝鲸故障自愈" class="headerlink" title="0x05 Zabbix接入蓝鲸故障自愈"></a>0x05 Zabbix接入蓝鲸故障自愈</h3><ul>
+<li>首先打开故障自愈，接着选择接入自愈，选择接入告警源。可以看到已启用的告警源和未启用的告警源。</li>
+<li><p>目前蓝鲸故障自愈支持主流的运维产品，对于不常用和企业自研的运维产品则可以REST APi推送，拉取的方式对接故障自愈。如下图所示：<br><img src="http://github.skyne.cn/zabbix/fta1.png" alt></p>
+</li>
+<li><p>接着看一看到Zabbix接入故障自愈的大致操作流程，按照此步骤操作即可，首先下载推送脚本，该脚本实际上是自动创建发送消息到故障自愈的Zabbix的Action</p>
+</li>
+<li><p>然后把该脚本copy到Zabbix-server所在的docker容器中的/usr/lib/zabbix/alertscripts/目录下，按照操作提示继续执行zabbix_fta_alarm.py脚本。如下图所示：<br><img src="http://github.skyne.cn/zabbix/fta2.png" alt></p>
+</li>
+<li><p>但此时会报错，原因在于zabbix_fta_alarm.py中的定义的Zabbix的API的路径不正确，也可能是Zabbix版本为4.0跟以前版本3.0之类的不一样导致的，自己未做验证。</p>
+</li>
+</ul>
+<pre><code>129 class ZabbixApi(object):
+130 
+131     def __init__(self, parse_url, user, password):
+132         self.parse_url = parse_url
+133         self.user = user
+134         self.password = password
+135         self.path = &#39;/zabbix/api_jsonrpc.php&#39;
+136         self.url = &#39;%s://%s%s&#39; % (parse_url.scheme, parse_url.netloc, parse_url.path or self.path)
+137 
+138         self.auth_token = None
+139         self.userid = None
+140         self.mediatypeid = None
+141         self.usrgrpid = 7  # Zabbix administrators
+142 
+143         self.script_name = &#39;zabbix_fta_alarm.py&#39;
+144         self.media_name = &#39;FTA_Event_Handler&#39;
+145         self.user_name = &#39;FTA_Mgr&#39;
+146         self.action_name = &#39;FTA_Act&#39;
+</code></pre><ul>
+<li>可以看到self.path = ‘/zabbix/api_jsonrpc.php’，而实际上，我们访问的zabbix页面的URL中没有/zabbix/这部分</li>
+<li><p>比如我们访问Zabbix-server主机IP:PORT/zabbix/api_jsonrpc.php会报404，而IP:PORT/api_jsonrpc.php则不会。</p>
+</li>
+<li><p>因此修改ZabbixApi类的self.path变量为 ‘/api_jsonrpc.php’，或者前往Zabbix-web容器中，在zabbix目录中做个软连接。参考命令如下：</p>
+</li>
+</ul>
+<pre><code>[root@738b3b27d24e zabbix]# pwd
+/usr/share/zabbix
+[root@738b3b27d24e zabbix]# ln -sv /usr/share/zabbix/ /usr/share/zabbix/zabbix
+[root@738b3b27d24e zabbix]# ls -l
+total 1024
+                   &#39;&#39;&#39; 省略大部分文件&#39;&#39;&#39;
+lrwxrwxrwx  1 root  root     18 Jun 14 14:04 zabbix -&gt; /usr/share/zabbix/
+-rw-r--r--  9 nginx nginx   841 Jun 10 15:39 zabbix.php
+
+</code></pre><ul>
+<li>这两种方式都可以解决这个问题，顺利的话，执行脚本zabbix_fta_alarm.py后，在Zabbix的web界面中管理，报警媒介类型中可以看到故障自愈的FTA_Event_Handler的媒介。<br><img src="http://github.skyne.cn/zabbix/fta3.png" alt></li>
+<li>至此Zabbix就成功接入到了故障自愈当中，Zabbix中的报警就会通过该脚本发送到故障自愈当中，进而被故障自愈继续处理。</li>
+</ul>
+<h3 id="0x06-配置故障自愈的自愈套餐"><a href="#0x06-配置故障自愈的自愈套餐" class="headerlink" title="0x06 配置故障自愈的自愈套餐"></a>0x06 配置故障自愈的自愈套餐</h3><ul>
+<li>在作业平台上新建一个作业，当触发自愈时，会在告警的主机也就是主机A上执行该作业，该作业非常简单，就是判断zabbix-agent进程在不在，不在的时候会启动zabbix-agent。</li>
+<li>具体操作如下图所示：<br><img src="http://github.skyne.cn/zabbix/job2.png" alt><br><img src="http://github.skyne.cn/zabbix/job3.png" alt></li>
+<li>图片中的代码参考如下：</li>
+</ul>
+<pre><code>#!/bin/bash
+ps -ef | grep zabbix_agent | grep -v grep   &gt;/dev/null 2&gt;&amp;1
+
+if  [[ $? -eq 0 ]]; then
+    echo -e  `date +&quot;%Y-%m-%d %H:%M:%S&quot;`  zabbix_agent is running.
+else
+    systemctl   restart   zabbix-agent || echo -e  `date +&quot;%Y-%m-%d %H:%M:%S&quot;`  zabbix_agent restart faild!
+    echo -e  `date +&quot;%Y-%m-%d %H:%M:%S&quot;` zabbix_agent restart success!
+fi
+
+</code></pre><ul>
+<li>然后在故障自愈中的管理套餐新建一个自愈套餐，参考如下图所示：<br><img src="http://github.skyne.cn/zabbix/fta7.png" alt><br><img src="http://github.skyne.cn/zabbix/fta4.png" alt></li>
+<li>套餐类型选择作业平台，因为我们在作业平台创建了一个作业，也可以选择其他平台，比如标准运维，配置平台等。</li>
+<li><p>作业名称就选择我们刚刚创建的，并勾选告警IP代替作业执行IP。</p>
+</li>
+<li><p>创建完自己套餐后，接着把该套餐接入自愈之中。参考如下图所示：<br><img src="http://github.skyne.cn/zabbix/fta6.png" alt></p>
+</li>
+<li>告警类型有多个选项，这边模拟zabbix-agent失联的情况，故选择了Agent状态类型，其他指标项也可以选择。</li>
+<li>告警集群和模块分别对应主机A在蓝鲸CMDB中的业务拓扑位置，为空则代表默认全选。</li>
+<li><p>套餐则就选择我们刚刚创建的自愈套餐。<br><img src="http://github.skyne.cn/zabbix/fta5.png" alt></p>
+</li>
+<li><p>至此我们就完成了故障自愈中的自愈套餐的创建和接入过程，接下来当Zabbix有告警产生时，就会出发自愈，执行作业，自愈完成。</p>
+</li>
+</ul>
+<h3 id="0x07-测试自愈套餐"><a href="#0x07-测试自愈套餐" class="headerlink" title="0x07 测试自愈套餐"></a>0x07 测试自愈套餐</h3><ul>
+<li>首先我们前往主机A中，手动停掉zabbix-agent进程，大约五分钟左右，zabbix页面上便会出现主机A不可达的告警，参考命令如下：</li>
+</ul>
+<pre><code>[root@monitor01 ~]# systemctl stop  zabbix-agent
+</code></pre><p><img src="http://github.skyne.cn/zabbix/zabbix_host4.png" alt></p>
+<ul>
+<li><p>同时我们可以在Zabbix的报表，动作日志中看到刚刚发送的消息。</p>
+</li>
+<li><p>然后我们前往故障自愈首页的自愈详情中便可以看到该次的自愈过程。如下图所示：<br><img src="http://github.skyne.cn/zabbix/zabbix_host5.png" alt></p>
+</li>
+<li><p>点击执行Job作业成功后面的任务ID可以跳转到作业平台的任务执行详情中，可以看到我们执行任务的情况，如下图所示：<br><img src="http://github.skyne.cn/zabbix/job4.png" alt></p>
+</li>
+<li><p>检查主机A的zabbix-agent服务，也已经被成功恢复:</p>
+</li>
+</ul>
+<pre><code>[root@oracle02 ~]# systemctl status  zabbix-agent
+● zabbix-agent.service - Zabbix Agent
+   Loaded: loaded (/usr/lib/systemd/system/zabbix-agent.service; enabled; vendor preset: disabled)
+   Active: active (running) since 三 2019-06-27 08:38:35 CST; 4min ago
+  Process: 1171 ExecStart=/usr/sbin/zabbix_agentd -c $CONFFILE (code=exited, status=0/SUCCESS)
+ Main PID: 1191 (zabbix_agentd)
+   Memory: 3.6M
+   CGroup: /system.slice/zabbix-agent.service
+           ├─1191 /usr/sbin/zabbix_agentd -c /etc/zabbix/zabbix_agentd.conf
+           ├─1192 /usr/sbin/zabbix_agentd: collector [idle 1 sec]
+           ├─1193 /usr/sbin/zabbix_agentd: listener #1 [waiting for connection]
+           ├─1194 /usr/sbin/zabbix_agentd: listener #2 [waiting for connection]
+           ├─1195 /usr/sbin/zabbix_agentd: listener #3 [waiting for connection]
+           └─1196 /usr/sbin/zabbix_agentd: active checks #1 [idle 1 sec]
+
+7月 03 14:25:21 oracle02 systemd[1]: Starting Zabbix Agent...
+7月 03 14:25:35 oracle02 systemd[1]: Started Zabbix Agent.
+[root@oracle02 ~]# 
+
+</code></pre><ul>
+<li>至此就完成了模拟故障，告警，自愈的全流程。</li>
+</ul>
+<h3 id="0x08-结语"><a href="#0x08-结语" class="headerlink" title="0x08 结语"></a>0x08 结语</h3><ul>
+<li>上面的例子是非常简单的，但通过蓝鲸平台的故障自愈我们能做很多类似的故障自愈的事情，减轻给我们的工作量。</li>
+</ul>
+
             </div>
             <hr>
 
