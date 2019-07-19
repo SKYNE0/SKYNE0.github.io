@@ -364,19 +364,21 @@
 <h4 id="如果你还没有用过Markdown，你可以看看他的简单用法，在这里"><a href="#如果你还没有用过Markdown，你可以看看他的简单用法，在这里" class="headerlink" title="如果你还没有用过Markdown，你可以看看他的简单用法，在这里"></a>如果你还没有用过Markdown，你可以看看他的简单用法，<a href="https://www.appinn.com/markdown/" target="_blank" rel="noopener">在这里</a></h4><hr>
 <h4 id="在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不同主题的代码高亮。"><a href="#在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不同主题的代码高亮。" class="headerlink" title="在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不同主题的代码高亮。"></a>在这里我们来简单配置，使得我们的Django应用支持Markdown语法，并且支持不同主题的代码高亮。</h4><hr>
 <h4 id="首先安装Markdown和pygments，前者使得文章支持Markdown语法，后者可以以css的形式来美化代码区"><a href="#首先安装Markdown和pygments，前者使得文章支持Markdown语法，后者可以以css的形式来美化代码区" class="headerlink" title="首先安装Markdown和pygments，前者使得文章支持Markdown语法，后者可以以css的形式来美化代码区"></a>首先安装Markdown和pygments，前者使得文章支持Markdown语法，后者可以以css的形式来美化代码区</h4><hr>
-<pre><code>pip install markdown
-pip install pygments
-</code></pre><h4 id="接下来在需要使用Markdown的地方加上如下代码。我们以article-content为例。"><a href="#接下来在需要使用Markdown的地方加上如下代码。我们以article-content为例。" class="headerlink" title="接下来在需要使用Markdown的地方加上如下代码。我们以article.content为例。"></a>接下来在需要使用Markdown的地方加上如下代码。我们以article.content为例。</h4><hr>
-<pre><code>#记得导入第三方包
-import markdown
+<pre class=" language-bash"><code class="language-bash">pip <span class="token function">install</span> markdown
+pip <span class="token function">install</span> pygments
+</code></pre>
+<h4 id="接下来在需要使用Markdown的地方加上如下代码。我们以article-content为例。"><a href="#接下来在需要使用Markdown的地方加上如下代码。我们以article-content为例。" class="headerlink" title="接下来在需要使用Markdown的地方加上如下代码。我们以article.content为例。"></a>接下来在需要使用Markdown的地方加上如下代码。我们以article.content为例。</h4><hr>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true">#记得导入第三方包</span>
+<span class="token keyword">import</span> markdown
 
-article.content = markdown.markdown(article.content,
-                              extensions=[&#39;markdown.extensions.fenced_code&#39;,
-                                 &#39;markdown.extensions.extra&#39;,
-                                 &#39;markdown.extensions.codehilite&#39;,
-                                 &#39;markdown.extensions.toc&#39;,
-                              ])
-</code></pre><h4 id="这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，"><a href="#这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，" class="headerlink" title="这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，"></a>这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，</h4><hr>
+article<span class="token punctuation">.</span>content <span class="token operator">=</span> markdown<span class="token punctuation">.</span>markdown<span class="token punctuation">(</span>article<span class="token punctuation">.</span>content<span class="token punctuation">,</span>
+                              extensions<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'markdown.extensions.fenced_code'</span><span class="token punctuation">,</span>
+                                 <span class="token string">'markdown.extensions.extra'</span><span class="token punctuation">,</span>
+                                 <span class="token string">'markdown.extensions.codehilite'</span><span class="token punctuation">,</span>
+                                 <span class="token string">'markdown.extensions.toc'</span><span class="token punctuation">,</span>
+                              <span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<h4 id="这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，"><a href="#这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，" class="headerlink" title="这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，"></a>这样，原先的Markdown形式的文本，就会被渲染成HTML文本了，extensions是我们给渲染函数传递的其他参数，</h4><hr>
 <h4 id="其中，codehilite是语法高亮扩展，其他的两个参数。我也不是太明白。"><a href="#其中，codehilite是语法高亮扩展，其他的两个参数。我也不是太明白。" class="headerlink" title="其中，codehilite是语法高亮扩展，其他的两个参数。我也不是太明白。"></a>其中，codehilite是语法高亮扩展，其他的两个参数。我也不是太明白。</h4><hr>
 <h4 id="接着，在模板中就可以使用来引入到模板中。加上过滤safe会告诉Django这是安全的，你不需要做什么。"><a href="#接着，在模板中就可以使用来引入到模板中。加上过滤safe会告诉Django这是安全的，你不需要做什么。" class="headerlink" title="接着，在模板中就可以使用来引入到模板中。加上过滤safe会告诉Django这是安全的，你不需要做什么。"></a>接着，在模板中就可以使用来引入到模板中。加上过滤safe会告诉Django这是安全的，你不需要做什么。</h4><hr>
 <h4 id="这样虽然可以使用Markdown了，但我们文章中的代码区并不会被渲染。会跟普通文本一样，可能比普通文本还难看。"><a href="#这样虽然可以使用Markdown了，但我们文章中的代码区并不会被渲染。会跟普通文本一样，可能比普通文本还难看。" class="headerlink" title="这样虽然可以使用Markdown了，但我们文章中的代码区并不会被渲染。会跟普通文本一样，可能比普通文本还难看。"></a>这样虽然可以使用Markdown了，但我们文章中的代码区并不会被渲染。会跟普通文本一样，可能比普通文本还难看。</h4><hr>

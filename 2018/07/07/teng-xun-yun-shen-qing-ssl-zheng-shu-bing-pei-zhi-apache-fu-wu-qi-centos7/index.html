@@ -367,42 +367,49 @@
 <h4 id="申请非常容易，可以直接登录到腾讯云，进入域名SSL证书部分，就可以了。也可以看这里的百度经验"><a href="#申请非常容易，可以直接登录到腾讯云，进入域名SSL证书部分，就可以了。也可以看这里的百度经验" class="headerlink" title="申请非常容易，可以直接登录到腾讯云，进入域名SSL证书部分，就可以了。也可以看这里的百度经验"></a>申请非常容易，可以直接登录到腾讯云，进入域名SSL证书部分，就可以了。也可以看这里的<a href="https://jingyan.baidu.com/article/574c521900cd976c8d9dc19e.html" target="_blank" rel="noopener">百度经验</a></h4><hr>
 <h4 id="申请完成后，可以把证书下载到本地，解压后是各种主流服务器的目录名，我这里选择Apache的。里面包括了三个文件：1-root-bundle-crt，2-www-domain-com-cert-crt-和私钥文件-3-www-domain-com-key-。"><a href="#申请完成后，可以把证书下载到本地，解压后是各种主流服务器的目录名，我这里选择Apache的。里面包括了三个文件：1-root-bundle-crt，2-www-domain-com-cert-crt-和私钥文件-3-www-domain-com-key-。" class="headerlink" title="申请完成后，可以把证书下载到本地，解压后是各种主流服务器的目录名，我这里选择Apache的。里面包括了三个文件：1_root_bundle.crt，2_www.domain.com_cert.crt 和私钥文件 3_www.domain.com.key,。"></a>申请完成后，可以把证书下载到本地，解压后是各种主流服务器的目录名，我这里选择Apache的。里面包括了三个文件：1_root_bundle.crt，2_<a href="http://www.domain.com_cert.crt" target="_blank" rel="noopener">www.domain.com_cert.crt</a> 和私钥文件 3_<a href="http://www.domain.com.key,。" target="_blank" rel="noopener">www.domain.com.key,。</a></h4><hr>
 <h4 id="现在我们开始配置Apache部分，也可以先使用FTP工具把需要的证书文件上传至服务器上。"><a href="#现在我们开始配置Apache部分，也可以先使用FTP工具把需要的证书文件上传至服务器上。" class="headerlink" title="现在我们开始配置Apache部分，也可以先使用FTP工具把需要的证书文件上传至服务器上。"></a>现在我们开始配置Apache部分，也可以先使用FTP工具把需要的证书文件上传至服务器上。</h4><hr>
-<h4 id="然后在-etc-httpd-目录下，新建目录ssl："><a href="#然后在-etc-httpd-目录下，新建目录ssl：" class="headerlink" title="然后在/etc/httpd/目录下，新建目录ssl："></a>然后在/etc/httpd/目录下，新建目录ssl：</h4><pre><code>[root@VM_58_88_centos httpd]#mkdir ssl
-</code></pre><hr>
+<h4 id="然后在-etc-httpd-目录下，新建目录ssl："><a href="#然后在-etc-httpd-目录下，新建目录ssl：" class="headerlink" title="然后在/etc/httpd/目录下，新建目录ssl："></a>然后在/etc/httpd/目录下，新建目录ssl：</h4><pre class=" language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@VM_58_88_centos httpd<span class="token punctuation">]</span><span class="token comment" spellcheck="true">#mkdir ssl</span>
+</code></pre>
+<hr>
 <h4 id="然后使用mv命令，把三个文件移动到ssl目录中，接下来开始OpenSSL部分。"><a href="#然后使用mv命令，把三个文件移动到ssl目录中，接下来开始OpenSSL部分。" class="headerlink" title="然后使用mv命令，把三个文件移动到ssl目录中，接下来开始OpenSSL部分。"></a>然后使用mv命令，把三个文件移动到ssl目录中，接下来开始OpenSSL部分。</h4><hr>
-<h4 id="一般Linux各发行版本已经安装了OpenSSL，可以在终端下输入："><a href="#一般Linux各发行版本已经安装了OpenSSL，可以在终端下输入：" class="headerlink" title="一般Linux各发行版本已经安装了OpenSSL，可以在终端下输入："></a>一般Linux各发行版本已经安装了OpenSSL，可以在终端下输入：</h4><pre><code>[root@VM_58_88_centos ~]# openssl version
+<h4 id="一般Linux各发行版本已经安装了OpenSSL，可以在终端下输入："><a href="#一般Linux各发行版本已经安装了OpenSSL，可以在终端下输入：" class="headerlink" title="一般Linux各发行版本已经安装了OpenSSL，可以在终端下输入："></a>一般Linux各发行版本已经安装了OpenSSL，可以在终端下输入：</h4><pre class=" language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@VM_58_88_centos ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># openssl version</span>
 OpenSSL 1.0.2l  25 May 2017
-[root@VM_58_88_centos ~]#
-</code></pre><h4 id="可以看到输出了OpenSSL的版本，如果没有安装，可以自行安装"><a href="#可以看到输出了OpenSSL的版本，如果没有安装，可以自行安装" class="headerlink" title="可以看到输出了OpenSSL的版本，如果没有安装，可以自行安装"></a>可以看到输出了OpenSSL的版本，如果没有安装，可以<a href="https://blog.csdn.net/ikownyou/article/details/53021686" target="_blank" rel="noopener">自行安装</a></h4><hr>
+<span class="token punctuation">[</span>root@VM_58_88_centos ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true">#</span>
+</code></pre>
+<h4 id="可以看到输出了OpenSSL的版本，如果没有安装，可以自行安装"><a href="#可以看到输出了OpenSSL的版本，如果没有安装，可以自行安装" class="headerlink" title="可以看到输出了OpenSSL的版本，如果没有安装，可以自行安装"></a>可以看到输出了OpenSSL的版本，如果没有安装，可以<a href="https://blog.csdn.net/ikownyou/article/details/53021686" target="_blank" rel="noopener">自行安装</a></h4><hr>
 <h4 id="接着，编辑-etc-httpd-conf-httpd-conf文件，其他系统可以对应找到Apache的配置文件修改即可。"><a href="#接着，编辑-etc-httpd-conf-httpd-conf文件，其他系统可以对应找到Apache的配置文件修改即可。" class="headerlink" title="接着，编辑/etc/httpd/conf/httpd.conf文件，其他系统可以对应找到Apache的配置文件修改即可。"></a>接着，编辑/etc/httpd/conf/httpd.conf文件，其他系统可以对应找到Apache的配置文件修改即可。</h4><hr>
-<h4 id="去掉下面代码前的-，使其生效，如果找不到，直接自己增加即可。"><a href="#去掉下面代码前的-，使其生效，如果找不到，直接自己增加即可。" class="headerlink" title="去掉下面代码前的#，使其生效，如果找不到，直接自己增加即可。"></a>去掉下面代码前的#，使其生效，如果找不到，直接自己增加即可。</h4><pre><code>#LoadModule ssl_module modules/mod_ssl.so 
-#Include conf/extra/httpd-ssl.conf
-</code></pre><h4 id="还有个地方可以自己先修改一下，把下面的None修改为All"><a href="#还有个地方可以自己先修改一下，把下面的None修改为All" class="headerlink" title="还有个地方可以自己先修改一下，把下面的None修改为All"></a>还有个地方可以自己先修改一下，把下面的None修改为All</h4><pre><code>&lt;Directory &quot;/yjdata/www/wwwroot&quot;&gt;
+<h4 id="去掉下面代码前的-，使其生效，如果找不到，直接自己增加即可。"><a href="#去掉下面代码前的-，使其生效，如果找不到，直接自己增加即可。" class="headerlink" title="去掉下面代码前的#，使其生效，如果找不到，直接自己增加即可。"></a>去掉下面代码前的#，使其生效，如果找不到，直接自己增加即可。</h4><pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true">#LoadModule ssl_module modules/mod_ssl.so </span>
+<span class="token comment" spellcheck="true">#Include conf/extra/httpd-ssl.conf</span>
+</code></pre>
+<h4 id="还有个地方可以自己先修改一下，把下面的None修改为All"><a href="#还有个地方可以自己先修改一下，把下面的None修改为All" class="headerlink" title="还有个地方可以自己先修改一下，把下面的None修改为All"></a>还有个地方可以自己先修改一下，把下面的None修改为All</h4><pre class=" language-bash"><code class="language-bash"><span class="token operator">&lt;</span>Directory <span class="token string">"/yjdata/www/wwwroot"</span><span class="token operator">></span>
     Options Indexes FollowSymLinks
-    AllowOverride All  #原本为None
+    AllowOverride All  <span class="token comment" spellcheck="true">#原本为None</span>
     Require all granted
-&lt;/Directory&gt;
-</code></pre><h4 id="修改后Apache可以根据项目文件中的-htaccess文件来修改配置，也就是启用-htaccess文件"><a href="#修改后Apache可以根据项目文件中的-htaccess文件来修改配置，也就是启用-htaccess文件" class="headerlink" title="修改后Apache可以根据项目文件中的.htaccess文件来修改配置，也就是启用.htaccess文件"></a>修改后Apache可以根据项目文件中的.htaccess文件来修改配置，也就是启用.htaccess文件</h4><hr>
+<span class="token operator">&lt;</span>/Directory<span class="token operator">></span>
+</code></pre>
+<h4 id="修改后Apache可以根据项目文件中的-htaccess文件来修改配置，也就是启用-htaccess文件"><a href="#修改后Apache可以根据项目文件中的-htaccess文件来修改配置，也就是启用-htaccess文件" class="headerlink" title="修改后Apache可以根据项目文件中的.htaccess文件来修改配置，也就是启用.htaccess文件"></a>修改后Apache可以根据项目文件中的.htaccess文件来修改配置，也就是启用.htaccess文件</h4><hr>
 <h4 id="自己在第一次配置时没注意到，导致浪费了很多时间也没配置好。"><a href="#自己在第一次配置时没注意到，导致浪费了很多时间也没配置好。" class="headerlink" title="自己在第一次配置时没注意到，导致浪费了很多时间也没配置好。"></a>自己在第一次配置时没注意到，导致浪费了很多时间也没配置好。</h4><hr>
-<h4 id="在-etc-httpd-conf-目录中，创建extra文件，并新建httpd-ssl-conf文件，并使用vim编辑："><a href="#在-etc-httpd-conf-目录中，创建extra文件，并新建httpd-ssl-conf文件，并使用vim编辑：" class="headerlink" title="在/etc/httpd/conf/目录中，创建extra文件，并新建httpd-ssl.conf文件，并使用vim编辑："></a>在/etc/httpd/conf/目录中，创建extra文件，并新建httpd-ssl.conf文件，并使用vim编辑：</h4><pre><code>[root@VM_58_88_centos conf]# mkdir extra
-[root@VM_58_88_centos conf]# cd extar
-[root@VM_58_88_centos extar]#vim httpd-ssl.conf
-# 增加下面的内容：
-&lt;VirtualHost 0.0.0.0:443&gt;
-    DocumentRoot &quot;/var/www/html&quot;
+<h4 id="在-etc-httpd-conf-目录中，创建extra文件，并新建httpd-ssl-conf文件，并使用vim编辑："><a href="#在-etc-httpd-conf-目录中，创建extra文件，并新建httpd-ssl-conf文件，并使用vim编辑：" class="headerlink" title="在/etc/httpd/conf/目录中，创建extra文件，并新建httpd-ssl.conf文件，并使用vim编辑："></a>在/etc/httpd/conf/目录中，创建extra文件，并新建httpd-ssl.conf文件，并使用vim编辑：</h4><pre class=" language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@VM_58_88_centos conf<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># mkdir extra</span>
+<span class="token punctuation">[</span>root@VM_58_88_centos conf<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># cd extar</span>
+<span class="token punctuation">[</span>root@VM_58_88_centos extar<span class="token punctuation">]</span><span class="token comment" spellcheck="true">#vim httpd-ssl.conf</span>
+<span class="token comment" spellcheck="true"># 增加下面的内容：</span>
+<span class="token operator">&lt;</span>VirtualHost 0.0.0.0:443<span class="token operator">></span>
+    DocumentRoot <span class="token string">"/var/www/html"</span>
     ServerName www.domain.com
     SSLEngine on
     SSLCertificateFile /etc/httpd/ssl/2_www.domain.com_cert.crt
     SSLCertificateKeyFile /etc/httpd/ssl/3_www.domain.com.key
     SSLCertificateChainFile /etc/httpd/ssl/1_root_bundle.crt
-&lt;/VirtualHost&gt;
-</code></pre><h4 id="其中”-var-www-html”-是自己网站项目的根目录，根据自己的情况填写。下面的加密文件也是如此。"><a href="#其中”-var-www-html”-是自己网站项目的根目录，根据自己的情况填写。下面的加密文件也是如此。" class="headerlink" title="其中”/var/www/html” 是自己网站项目的根目录，根据自己的情况填写。下面的加密文件也是如此。"></a>其中”/var/www/html” 是自己网站项目的根目录，根据自己的情况填写。下面的加密文件也是如此。</h4><hr>
+<span class="token operator">&lt;</span>/VirtualHost<span class="token operator">></span>
+</code></pre>
+<h4 id="其中”-var-www-html”-是自己网站项目的根目录，根据自己的情况填写。下面的加密文件也是如此。"><a href="#其中”-var-www-html”-是自己网站项目的根目录，根据自己的情况填写。下面的加密文件也是如此。" class="headerlink" title="其中”/var/www/html” 是自己网站项目的根目录，根据自己的情况填写。下面的加密文件也是如此。"></a>其中”/var/www/html” 是自己网站项目的根目录，根据自己的情况填写。下面的加密文件也是如此。</h4><hr>
 <h4 id="这样就到最后一步了，在网站项目根目录下创建-htaccess文件，可以使用-ls-a-查看是否已经存在。不存在创建即可。"><a href="#这样就到最后一步了，在网站项目根目录下创建-htaccess文件，可以使用-ls-a-查看是否已经存在。不存在创建即可。" class="headerlink" title="这样就到最后一步了，在网站项目根目录下创建.htaccess文件，可以使用: ls -a 查看是否已经存在。不存在创建即可。"></a>这样就到最后一步了，在网站项目根目录下创建.htaccess文件，可以使用: ls -a 查看是否已经存在。不存在创建即可。</h4><hr>
-<h4 id="增加以下内容："><a href="#增加以下内容：" class="headerlink" title="增加以下内容："></a>增加以下内容：</h4><pre><code>RewriteEngine On
-RewriteCond %{HTTPS} !=on
-RewriteRule ^(.*) https://%{SERVER_NAME}/$1 [R,L]
-</code></pre><h4 id="关于更详细的信息，你可以看这篇博客，Apache-强制-HTTP-全部跳转到-HTTPS"><a href="#关于更详细的信息，你可以看这篇博客，Apache-强制-HTTP-全部跳转到-HTTPS" class="headerlink" title="关于更详细的信息，你可以看这篇博客，Apache 强制 HTTP 全部跳转到 HTTPS"></a>关于更详细的信息，你可以看这篇博客，<a href="https://www.centos.bz/2018/01/apache-%E5%BC%BA%E5%88%B6-http-%E5%85%A8%E9%83%A8%E8%B7%B3%E8%BD%AC%E5%88%B0-https/" target="_blank" rel="noopener">Apache 强制 HTTP 全部跳转到 HTTPS</a></h4><hr>
-<h4 id="至此。所有配置就好了，只需要重启Apache就可以试试了。"><a href="#至此。所有配置就好了，只需要重启Apache就可以试试了。" class="headerlink" title="至此。所有配置就好了，只需要重启Apache就可以试试了。"></a>至此。所有配置就好了，只需要重启Apache就可以试试了。</h4><p><code>server httpd restart</code></p>
+<h4 id="增加以下内容："><a href="#增加以下内容：" class="headerlink" title="增加以下内容："></a>增加以下内容：</h4><pre class=" language-bash"><code class="language-bash">RewriteEngine On
+RewriteCond %<span class="token punctuation">{</span>HTTPS<span class="token punctuation">}</span> <span class="token operator">!=</span>on
+RewriteRule ^<span class="token punctuation">(</span>.*<span class="token punctuation">)</span> https://%<span class="token punctuation">{</span>SERVER_NAME<span class="token punctuation">}</span>/<span class="token variable">$1</span> <span class="token punctuation">[</span>R,L<span class="token punctuation">]</span>
+</code></pre>
+<h4 id="关于更详细的信息，你可以看这篇博客，Apache-强制-HTTP-全部跳转到-HTTPS"><a href="#关于更详细的信息，你可以看这篇博客，Apache-强制-HTTP-全部跳转到-HTTPS" class="headerlink" title="关于更详细的信息，你可以看这篇博客，Apache 强制 HTTP 全部跳转到 HTTPS"></a>关于更详细的信息，你可以看这篇博客，<a href="https://www.centos.bz/2018/01/apache-%E5%BC%BA%E5%88%B6-http-%E5%85%A8%E9%83%A8%E8%B7%B3%E8%BD%AC%E5%88%B0-https/" target="_blank" rel="noopener">Apache 强制 HTTP 全部跳转到 HTTPS</a></h4><hr>
+<h4 id="至此。所有配置就好了，只需要重启Apache就可以试试了。"><a href="#至此。所有配置就好了，只需要重启Apache就可以试试了。" class="headerlink" title="至此。所有配置就好了，只需要重启Apache就可以试试了。"></a>至此。所有配置就好了，只需要重启Apache就可以试试了。</h4><pre class=" language-bash"><code class="language-bash">server httpd restart
+</code></pre>
 <h4 id="打开你的网站，看看是否生效了。如果有其他问题不妨看看腾讯云的证书安装指引"><a href="#打开你的网站，看看是否生效了。如果有其他问题不妨看看腾讯云的证书安装指引" class="headerlink" title="打开你的网站，看看是否生效了。如果有其他问题不妨看看腾讯云的证书安装指引"></a>打开你的网站，看看是否生效了。如果有其他问题不妨看看腾讯云的<a href="https://cloud.tencent.com/document/product/400/4143" target="_blank" rel="noopener">证书安装指引</a></h4><hr>
 <h4 id="配置过程不会一帆风顺，遇到问题，多百度，多思考，是磨练也是成长。"><a href="#配置过程不会一帆风顺，遇到问题，多百度，多思考，是磨练也是成长。" class="headerlink" title="配置过程不会一帆风顺，遇到问题，多百度，多思考，是磨练也是成长。"></a>配置过程不会一帆风顺，遇到问题，多百度，多思考，是磨练也是成长。</h4>
             </div>
