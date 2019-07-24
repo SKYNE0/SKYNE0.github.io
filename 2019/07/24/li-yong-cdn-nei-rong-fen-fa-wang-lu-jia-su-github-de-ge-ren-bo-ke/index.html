@@ -4,11 +4,10 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Win10家庭版安装使用Docker, SKYNE">
-    <meta name="description" content="0x00 前言
-为什么要在Windows平台下使用Docker呢，主要是在配置一些基础运行环境时比较费劲。
-比如想使用Redis，MySQL，MongoDB等的开发环境时，自己要本机手动安装这些服务组件。
-安装配置也比较费时，所以便想要使用">
+    <meta name="keywords" content="利用CDN内容分发网络加速Github的个人博客, SKYNE">
+    <meta name="description" content="0x01 简述背景
+在自己大三时，腾讯云搞活动，学生资格可以每月一元购买1C1G的50G存储的云主机，当时自己就买了一台，用到了现在。
+当时感觉从事IT的好像都写博客，自己不是太喜欢写东西，但还是感觉有点意思，便跟着网上的教程，利用Word">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -285,13 +284,13 @@
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('http://static.skyne.cn/image/D-480x270.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('http://static.skyne.cn/image/C-480x270.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Win10家庭版安装使用Docker
+                        利用CDN内容分发网络加速Github的个人博客
                     </div>
                 </div>
             </div>
@@ -313,16 +312,28 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Win10/" target="_blank">
-                                <span class="chip bg-color">Win10</span>
+                            <a href="/tags/Github/" target="_blank">
+                                <span class="chip bg-color">Github</span>
                             </a>
                         
-                            <a href="/tags/家庭版/" target="_blank">
-                                <span class="chip bg-color">家庭版</span>
+                            <a href="/tags/CDN/" target="_blank">
+                                <span class="chip bg-color">CDN</span>
                             </a>
                         
-                            <a href="/tags/Docker/" target="_blank">
-                                <span class="chip bg-color">Docker</span>
+                            <a href="/tags/内容分发网络/" target="_blank">
+                                <span class="chip bg-color">内容分发网络</span>
+                            </a>
+                        
+                            <a href="/tags/个人博客/" target="_blank">
+                                <span class="chip bg-color">个人博客</span>
+                            </a>
+                        
+                            <a href="/tags/域名/" target="_blank">
+                                <span class="chip bg-color">域名</span>
+                            </a>
+                        
+                            <a href="/tags/腾讯云/" target="_blank">
+                                <span class="chip bg-color">腾讯云</span>
                             </a>
                         
                     </div>
@@ -333,8 +344,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Docker/" class="post-category" target="_blank">
-                                Docker
+                            <a href="/categories/Github/" class="post-category" target="_blank">
+                                Github
                             </a>
                         
                     </div>
@@ -345,7 +356,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-07-23
+                    2019-07-24
                 </div>
 
                 
@@ -361,166 +372,50 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h3><ul>
-<li>为什么要在Windows平台下使用Docker呢，主要是在配置一些基础运行环境时比较费劲。</li>
-<li>比如想使用Redis，MySQL，MongoDB等的开发环境时，自己要本机手动安装这些服务组件。</li>
-<li>安装配置也比较费时，所以便想要使用Docker容器来快捷地启用某些服务，停用服务。</li>
-<li>相对于安装到本机，使用容器的方式，能更好的隔离组件运行环境，也避免对本机造成的影响。</li>
+                <h3 id="0x01-简述背景"><a href="#0x01-简述背景" class="headerlink" title="0x01 简述背景"></a>0x01 简述背景</h3><ul>
+<li>在自己大三时，腾讯云搞活动，学生资格可以每月一元购买1C1G的50G存储的云主机，当时自己就买了一台，用到了现在。</li>
+<li>当时感觉从事IT的好像都写博客，自己不是太喜欢写东西，但还是感觉有点意思，便跟着网上的教程，利用WordPress，买了域名搭建了最初的博客。</li>
+<li>当时完全处于好奇，也没什么价值，更像是一种自娱自乐。后来自己学习Python的Web开发，就前端使用<a href="https://semantic-ui.com/" target="_blank" rel="noopener">semantic ui</a>构建，后端使用<a href="https://www.djangoproject.com/" target="_blank" rel="noopener">Django</a>搭建，自己一点点写成了自己想要的样子。</li>
+<li>使用自己写的代码替代了WordPress，感觉还挺有成就感的。但真的好简单，哈哈。</li>
+<li>现在自己毕业了，云主机也就不能再继续续费使用了，每月65的费用还是有点不菲呀，便可以试着使用Hexo来构建静态博客，放在Github上。然后觉得还真不错，真的很适合搭建自己的博客。<a href="https://pages.github.com/" target="_blank" rel="noopener">Github Pages的介绍</a></li>
+<li>而且现在Github的个人主页的仓库还可绑定一个域名，比如之前只能通过userbame.github.io访问，现在可以绑定一个域名，通过域名访问，这简直是为想我这样的人量身定做呀。</li>
+<li>关于怎么使用Hexo搭建静态博客和绑定域名可以参考我的<a href="https://www.skyne.cn/2019/05/17/hexo-github-domain-gou-jian-zi-ji-de-ge-xing-bo-ke/">另一篇文章</a>,还是非常简单的。</li>
+<li>但这种方式也有弊端，大家平时访问Github时就可以感觉到网站响应有点慢，这是因为Github服务器位于国外的原因，我们访问起来就可慢，同样的我们的Github的博客也会响应非常慢，</li>
+<li>特别是有大量的图片，视频等资源时特别明显，当别人访问我们的域名时，体验感就会很差，自己常常都会有点难以接受。</li>
+<li>但Github Pages毕竟是免费的东西,初衷只是为了让个人或者组织，项目有一个专属页面，通过这个页面大家可以快速了解仓库所属者，组织，项目等，因此我们还是要非常感谢Github的。</li>
+<li>如果是生产环境或者动态网站，我们可能会分析影响响应速度，用户体验的原因，进而解决。静态网站就简单的多了，跟网络和静态文件大小有关系。</li>
+<li>因此没有比使用CDN更好的方法了，而且CDN的费用不高，按量收费。CDN的有点大致如下：</li>
 </ul>
-<h3 id="0x01-Win10家庭版的局限性"><a href="#0x01-Win10家庭版的局限性" class="headerlink" title="0x01 Win10家庭版的局限性"></a>0x01 Win10家庭版的局限性</h3><ul>
-<li>Win10版本总共分为家庭版、专业版、企业版、教育版四个版本，不同版本之间针对的用户不一样，大致如下：</li>
-</ul>
-<pre class=" language-bash"><code class="language-bash">1. 家庭版<span class="token punctuation">(</span>Home<span class="token punctuation">)</span>：仅包含基础功能，在所有版本中功能最少，适合普通用户。
-
-2. 专业版<span class="token punctuation">(</span>Pro<span class="token punctuation">)</span>：包含大量高级功能，适合高端用户群体使用。
-
-3. 业版<span class="token punctuation">(</span>Enterprise<span class="token punctuation">)</span>：针对企业用户推出的版本，提供批量授权。
-
-4. 教育版<span class="token punctuation">(</span>Education<span class="token punctuation">)</span>：以企业版为基础，面向学校教师和学生的版本。
+<pre class=" language-bash"><code class="language-bash">1、本地Cache加速：提高了企业站点（尤其含有大量图片和静态页面站点）的访问速度，并大大提高以上性质站点的稳定性。 
+2、镜像服务：消除了不同运营商之间互联的瓶颈造成的影响，实现了跨运营商的网络加速，保证不同网络中的用户都能得到良好的访问质量。
+3、远程加速：远程访问用户根据DNS负载均衡技术智能自动选择Cache服务器，选择最快的Cache服务器，加快远程访问的速度。 
+4、带宽优化：自动生成服务器的远程Mirror（镜像）cache服务器，远程用户访问时从cache服务器上读取数据，减少远程访问的带宽、分担网络流量、减轻原站点WEB服务器负载等功能。
+5、集群抗攻击：广泛分布的CDN节点加上节点之间的智能冗余机制，可以有效地预防黑客入侵以及降低各种D.D.o.S攻击对网站的影响，同时保证较好的服务质量 。
+<span class="token comment" spellcheck="true"># 来自百度百科</span>
 </code></pre>
 <ul>
-<li><p>因为很多笔记本电脑预装的Win10家庭版，所以当我们使用一些功能时会遇到不少问题，</p>
-</li>
-<li><p>自己在安装最近推出的Windows Terminal和安装Docker时便遇到了Windows版本的问题。</p>
-</li>
-<li><p>但系统又不能向软件一样快速升级，所以在这里简述下Win10家庭版如何安装Docker。</p>
-</li>
+<li>所以我们可以使用CDN内容分发网络来以我们的Github上的Pages作为源，当其他人访问我们的域名时，会首先由离访问者最近的CDN节点返回内容，同时CDN网络也会按照设置的时间周期同步Github上的源来更新自己的缓存。</li>
+<li>此次以腾讯云上的域名解析，SSL证书，CDN内容分发网络来简述下大致的操作，不同的云服务厂商可能会略有差别，比如：七牛云，阿里云等，但应该大同小异，大部分类似。</li>
 </ul>
-<h3 id="下载Docker的Windows版的安装包"><a href="#下载Docker的Windows版的安装包" class="headerlink" title="下载Docker的Windows版的安装包"></a>下载Docker的Windows版的安装包</h3><ul>
-<li>直接前往<a href="https://hub.docker.com/editions/community/docker-ce-desktop-windows" target="_blank" rel="noopener">Docker官网</a>选择下载即可，需要自己有Docker账户。</li>
-<li>同时Docker还提供了了Windows下安装Docker的步骤和注意的事项，其中就包括了要求版本为Win10专业版或者企业版,教育版，<a href="https://docs.docker.com/docker-for-windows/install/" target="_blank" rel="noopener">参考链接</a></li>
+<h3 id="0x02-申请域名，申请免费的SSL证书"><a href="#0x02-申请域名，申请免费的SSL证书" class="headerlink" title="0x02 申请域名，申请免费的SSL证书"></a>0x02 申请域名，申请免费的SSL证书</h3><ul>
+<li>域名这个哪里都可以买得到，一般你使用什么云，就在哪买就好了，会方便很多，自己喜欢什么样的一串字符或者有意义的单词都可以作为域名，也可以是数字或者组合。</li>
+<li>你拥有一个域名后，一般都可免费申请一个对应的SSL证书，使用该证书可以使用更加安全的https协议，但貌似也没有什么用。参考如下：<br><img src="http://github.skyne.cn/domain/domain9.png" alt><br><img src="http://github.skyne.cn/domain/domain10.png" alt></li>
+<li>一般情况下，我们可以通过CNAME的方式把一个域名指向另一个域名，比如把我们购买的域名指向Github的域名，Github Pages绑定域名也是这种原理。</li>
+<li>有了域名和证书后，下面就可以配置CDN网络了。</li>
 </ul>
-<pre class=" language-bash"><code class="language-bash">System Requirements:
-
-Windows 10 64bit: Pro, Enterprise or Education <span class="token punctuation">(</span>Build 15063 or later<span class="token punctuation">)</span>.
-Virtualization is enabled <span class="token keyword">in</span> BIOS. Typically, virtualization is enabled by default. This is different from having Hyper-V enabled. For <span class="token function">more</span> detail see Virtualization must be enabled <span class="token keyword">in</span> Troubleshooting.
-CPU SLAT-capable feature.
-At least 4GB of RAM.
-</code></pre>
-<ul>
-<li>因为服务器在国外的原因，下载速度会比较慢，因此可以选择国内的社区提供的百度云的<a href="https://oomake.com/download/docker-windows" target="_blank" rel="noopener">下载链接</a>，速度会快很多。<br><img src="http://github.skyne.cn/docker/docker1.png" alt><br><img src="http://github.skyne.cn/docker/docker2.png" alt></li>
-<li>下载好后，如果不是Win10家庭版的话直接安装即可，Win10家庭版少许有点麻烦，但也不复杂，参考下面的方法。</li>
-</ul>
-<h3 id="0x03-启用Windows的Hyper-V功能"><a href="#0x03-启用Windows的Hyper-V功能" class="headerlink" title="0x03 启用Windows的Hyper-V功能"></a>0x03 启用Windows的Hyper-V功能</h3><ul>
-<li>Hyper-V 是微软的一款虚拟化产品，类似与我们常用的Vmware和Vbox,可以方便的创建使用虚拟机。</li>
-<li>但自己也没用过，也不知道好不好用，应该不好用吧，反正自己没用尝试过，想要了解的话可以看一下<a href="https://baike.baidu.com/item/Hyper-V/10508230?fr=aladdin" target="_blank" rel="noopener">相关介绍</a></li>
-<li>下面说一下怎么启用，Win10家庭版默认不启用，在启用与关闭Windows功能界面也找不到它。</li>
-<li>需要执行一些命令要安装启用它，首先查看一下系统有没有开启虚拟化，通过systeminfo查看</li>
-</ul>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 打开CMD，输入systeminfo回车</span>
-C:\Users\SKYNE<span class="token operator">></span>systeminfo
-        <span class="token string">''</span><span class="token string">''</span><span class="token string">' 省略一大堆'</span><span class="token string">''</span><span class="token string">''</span>
-                  <span class="token punctuation">[</span>04<span class="token punctuation">]</span>: Hyper-V Virtual Ethernet Adapter
-                      连接名:      vEthernet <span class="token punctuation">(</span>Default Switch<span class="token punctuation">)</span>
-                      启用 DHCP:   否
-                      IP 地址
-                        <span class="token punctuation">[</span>01<span class="token punctuation">]</span>: 192.168.95.97
-                        <span class="token punctuation">[</span>02<span class="token punctuation">]</span>: fe80::d45f:3c33:e746:e078
-                  <span class="token punctuation">[</span>05<span class="token punctuation">]</span>: Hyper-V Virtual Ethernet Adapter
-                      连接名:      vEthernet <span class="token punctuation">(</span>DockerNAT<span class="token punctuation">)</span>
-                      启用 DHCP:   否
-                      IP 地址
-                        <span class="token punctuation">[</span>01<span class="token punctuation">]</span>: 10.0.75.1
-Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。
-C:\Users\SKYNE<span class="token operator">></span>
-</code></pre>
-<p><img src="http://github.skyne.cn/docker/cmd2.png" alt></p>
-<ul>
-<li>我已经启用了 Hyper-V，没启用的话会显示Hyper-V 要求的一些东西。</li>
-<li>新建一个hyper_v.cmd空白文件，输入一下命令：</li>
-</ul>
-<pre class=" language-bash"><code class="language-bash"><span class="token function">pushd</span> <span class="token string">"%~dp0"</span>
-
-<span class="token function">dir</span> /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum <span class="token operator">></span>hyper-v.txt
-
-<span class="token keyword">for</span> /f %%i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token string">'findstr /i . hyper-v.txt 2^>nul'</span><span class="token punctuation">)</span> <span class="token keyword">do</span> dism /online /norestart /add-package:<span class="token string">"%SystemRoot%\servicing\Packages\%%i"</span>
-
-del hyper-v.txt
-
-Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL
-</code></pre>
-<p><img src="http://github.skyne.cn/docker/cmd1.png" alt></p>
-<ul>
-<li><p>在该文件上鼠标右键选择以管理员身份运行，稍等片刻，该脚本会下载并安装一些东西，最后让你确认是否重启系统，输入Y重启系统即可。</p>
-</li>
-<li><p>然后在控制面板的程序，启用或者关闭Windows功能中便可以看到Hyper-V了，此时应该已经打上对勾启用了。</p>
-</li>
-</ul>
-<h3 id="0x04-安装Docker"><a href="#0x04-安装Docker" class="headerlink" title="0x04 安装Docker"></a>0x04 安装Docker</h3><ul>
-<li><p>双击Docker的安装包，稍等片刻便可以看到提示说：安装失败，要求的操作系统版本为什么什么，<br><img src="http://github.skyne.cn/docker/docker3.png" alt></p>
-</li>
-<li><p>此时可以通过修改注册表的方式，临时修改系统的版本的为专业版，从而跳过版本验证，对于Docker的使用没有影响。</p>
-</li>
-<li><p>可以利用Windows左下角的搜索功能快速找到注册表编辑器，进入并找到HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion,找到EditionId，</p>
-</li>
-<li><p>双击EditionId，修改其值为Professional，保存退出。参考下图：<br><img src="http://github.skyne.cn/docker/zhucebiao.png" alt><br><img src="http://github.skyne.cn/docker/zhucebiao1.png" alt></p>
-</li>
-<li><p>如果闲太麻烦，也可以直接使用脚本命令来快速改写，粘贴下面的命令到CMD终端中，记得以管理员身份运行CMD。</p>
-</li>
-</ul>
-<pre class=" language-bash"><code class="language-bash">REG ADD <span class="token string">"HKEY_LOCAL_MACHINE\software\Microsoft\Windows NT\CurrentVersion"</span> /v EditionId /T REG_EXPAND_SZ /d Professional /F
-</code></pre>
-<ul>
-<li><p>修改完成后，直接安装Docker安装包即可，但要记得不勾选windows容器，默认是不勾选的，勾选的话在使用windows容器时会检查系统版本，一般也不用用到windows容器。</p>
-</li>
-<li><p>不出意外的话应该就可以安装完成了，你双击启动Docker，不会弹出什么窗口，但可以在桌面右下角看到它。这就代表Docker已经启动了，你可以在终端使用docker了。</p>
-</li>
-</ul>
-<h3 id="0x05-遇到的问题及解决"><a href="#0x05-遇到的问题及解决" class="headerlink" title="0x05 遇到的问题及解决"></a>0x05 遇到的问题及解决</h3><ol>
-<li>启动Docker后输入查看版本信息正常，但输入其他命令报错：</li>
-</ol>
-<pre class=" language-bash"><code class="language-bash">C:\Users\SKYNE<span class="token operator">></span>docker -v
-Docker version 18.06.1-ce, build e68fc7a
-C:\Users\SKYNE<span class="token operator">></span>docker <span class="token function">ps</span>
-error during connect: Get http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.39/containers/json: <span class="token function">open</span> //./pipe/docker_engine: The system cannot <span class="token function">find</span> the <span class="token function">file</span> specified. In the default daemon configuration on Windows, the docker client must be run elevated to connect. This error may also indicate that the docker daemon is not running.
-</code></pre>
-<ul>
-<li><p>不清楚该错误的内在原因，该问题在github有个issue，可以参考一下解决方法：</p>
-</li>
-<li><p>issue上大致说明了两种解决方法,参考如下：</p>
-</li>
-</ul>
-<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> <span class="token string">"C:\Program Files\Docker\Docker"</span>
-./DockerCli.exe -SwitchDaemon 
-<span class="token comment" spellcheck="true"># 使用CMD时去掉 ./ 使用Powershell时使用上述命令</span>
-</code></pre>
-<ul>
-<li>另一种方法参考issue，具体可以自行尝试即可，<a href="https://github.com/docker/for-win/issues/1825" target="_blank" rel="noopener">附上链接</a></li>
-</ul>
-<ol start="2">
-<li>更换Docker国内的镜像源</li>
-</ol>
-<ul>
-<li>这个很简单，运行Docker后，在桌面的右下角有Docker图标，右键选择settings，打开设置，选择Daemon，更换镜像源保存即可。<br><img src="http://github.skyne.cn/docker/docker4.png" alt></li>
-<li>下面是可供选择的镜像源</li>
-</ul>
-<pre class=" language-bash"><code class="language-bash">Docker中国区官方镜像
-https://registry.docker-cn.com
-
-网易
-http://hub-mirror.c.163.com
-
-ustc 
-https://docker.mirrors.ustc.edu.cn
-
-中国科技大学
-https://docker.mirrors.ustc.edu.cn
-</code></pre>
-<ol start="3">
-<li>首次忘记登录Docker</li>
-</ol>
-<ul>
-<li>首次使用Docker下载镜像时会验证用户，使用docker login命令登录即可：</li>
-</ul>
-<pre class=" language-bash"><code class="language-bash">C:\Users\SKYNE<span class="token operator">></span>docker login
-Authenticating with existing credentials<span class="token punctuation">..</span>.
-Stored credentials invalid or expired
-Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, <span class="token function">head</span> over to https://hub.docker.com to create one.                                                                                            
-Username <span class="token punctuation">(</span>1163046964@qq.com<span class="token punctuation">)</span>: skyne0                                                                                    Password:
-Login Succeeded
-</code></pre>
-<ul>
-<li>自此便可以愉快的在Win10下玩耍容器了。</li>
+<h3 id="0x03-配置CDN加速网络"><a href="#0x03-配置CDN加速网络" class="headerlink" title="0x03 配置CDN加速网络"></a>0x03 配置CDN加速网络</h3><ul>
+<li>首先打开腾讯的CDN内容分发网络，第一次的话会让你开通CDN，一路同意，并选择按流量计费就可以了，一般都会送你好多G的新手流量包。<br><img src="http://github.skyne.cn/domain/domain1.png" alt></li>
+<li>接着在域名在左边栏的域名管理中可以添加域名，然后按照自己的域名填写即可，参考如下：<br><img src="http://github.skyne.cn/domain/domain4.png" alt></li>
+<li>域名就是我们想要加速的域名，比如 <a href="http://www.skyne.cn">www.skyne.cn</a>, 源站设置为你的Github主页的地址如：skyne0.github.io，下面还要配置缓存周期设置。<br><img src="http://github.skyne.cn/domain/domain3.png" alt></li>
+<li>接着业务类型是默认的静态加速，我是设置的5天的时间周期，因为自己很懒，博客更新很慢，这个根据自己的情况即可，文件类型填写自己的都有什么类型的文件后缀即可。</li>
+<li>然后提交，提交后CDN网络部署需要点时间，可以先前往域名解析处配置一下CNAME记录。返回域名管理，可以看到正在部署的域名，然后点进去，可以看到域名信息和CNAME信息。<br><img src="http://github.skyne.cn/domain/domain11.png" alt></li>
+<li>把CNAME记录复制一下，然后点击控制台的总览，选择云解析，可以看到自己的域名，然后点进去，既可以管理各种类型的主机记录了，找到www或者新建www的主机记录，主机类型为CNAME。<br><img src="http://github.skyne.cn/domain/domain7.png" alt></li>
+<li>记录值就是刚刚复制的CDN的CNAME的值，然后保存即可，至此域名解析就做好了。</li>
+<li>还回到CDN的域名管理处，选择域名点进去，然后在最后面的高级配置处可以找到HTTPS配置，然后增加一个证书，并绑定自己的申请的SSL证书即可。<br><img src="http://github.skyne.cn/domain/domain12.png" alt></li>
+<li>这个可以配置也可以不配置，属于可选项，但感觉就算是跟一下潮流吧。</li>
+<li>所有都配置完成后，便大工告成了，你可以尝试着访问自己的域名，看有没有成功。</li>
+<li>你在CDN的概览页面还可以看到自己的域名被请求的数据统计情况，十分方便也易于理解。</li>
+<li>如果你的博客还不错，浏览量很大，新手套餐不够用的话，也可以再购买CDN流量也是非常的便宜。<br><img src="http://github.skyne.cn/domain/domain2.png" alt></li>
 </ul>
 
             </div>
@@ -545,7 +440,7 @@ Login Succeeded
                     </span>
                     <a href="http://www.skyne.cn" class="b-link-green">SKYNE</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/07/23/win10-jia-ting-ban-an-zhuang-shi-yong-docker/" class="b-link-green">Win10家庭版安装使用Docker</a>
+                    <a href="/2019/07/24/li-yong-cdn-nei-rong-fen-fa-wang-lu-jia-su-github-de-ge-ren-bo-ke/" class="b-link-green">利用CDN内容分发网络加速Github的个人博客</a>
                 </p>
             </div>
         </div>
@@ -568,7 +463,8 @@ Login Succeeded
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2019/07/24/li-yong-cdn-nei-rong-fen-fa-wang-lu-jia-su-github-de-ge-ren-bo-ke/">
                     <div class="card-image">
@@ -583,9 +479,9 @@ Login Succeeded
 在自己大三时，腾讯云搞活动，学生资格可以每月一元购买1C1G的50G存储的云主机，当时自己就买了一台，用到了现在。
 当时感觉从事IT的好像都写博客，自己不是太喜欢写东西，但还是感觉有点意思，便跟着网上的教程，利用Word</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-24
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -598,6 +494,7 @@ Login Succeeded
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -636,28 +533,29 @@ Login Succeeded
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/07/16/jian-shu-teng-xun-lan-jing-zi-dong-hua-yun-wei-ping-tai/">
+                <a href="/2019/07/23/win10-jia-ting-ban-an-zhuang-shi-yong-docker/">
                     <div class="card-image">
                         
-                        <img src="http://static.skyne.cn/image/T-480x270.jpg" class="responsive-img" alt="简述腾讯蓝鲸自动化运维平台">
+                        <img src="http://static.skyne.cn/image/D-480x270.jpg" class="responsive-img" alt="Win10家庭版安装使用Docker">
                         
-                        <span class="card-title">简述腾讯蓝鲸自动化运维平台</span>
+                        <span class="card-title">Win10家庭版安装使用Docker</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">0x01 腾讯蓝鲸简介？&lt;官方解释&gt;
-蓝鲸智云，简称蓝鲸，是腾讯游戏运营部“腾讯智营”下的一个子品牌。它是一套基于PaaS的技术解决方案，
-提供了完善的前后台开发框架、调度引擎、公共组件等模块，帮助业务的产品和技术人员快速构建低</div>
+                    <div class="summary">0x00 前言
+为什么要在Windows平台下使用Docker呢，主要是在配置一些基础运行环境时比较费劲。
+比如想使用Redis，MySQL，MongoDB等的开发环境时，自己要本机手动安装这些服务组件。
+安装配置也比较费时，所以便想要使用</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-16
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-23
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/BlueKing/" class="post-category" target="_blank">
-                                    BlueKing
+                            <a href="/categories/Docker/" class="post-category" target="_blank">
+                                    Docker
                                 </a>
                             
                             
@@ -667,16 +565,16 @@ Login Succeeded
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/腾讯蓝鲸/" target="_blank">
-                        <span class="chip bg-color">腾讯蓝鲸</span>
+                    <a href="/tags/Win10/" target="_blank">
+                        <span class="chip bg-color">Win10</span>
                     </a>
                     
-                    <a href="/tags/自动化运维/" target="_blank">
-                        <span class="chip bg-color">自动化运维</span>
+                    <a href="/tags/家庭版/" target="_blank">
+                        <span class="chip bg-color">家庭版</span>
                     </a>
                     
-                    <a href="/tags/DevOps/" target="_blank">
-                        <span class="chip bg-color">DevOps</span>
+                    <a href="/tags/Docker/" target="_blank">
+                        <span class="chip bg-color">Docker</span>
                     </a>
                     
                 </div>
