@@ -1,0 +1,880 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="蓝鲸ElasticSearch三节点集群水平扩容至九节点, SKYNE">
+    <meta name="description" content="本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。
+前言
+
+ES常用API
+
+大致扩容方案
+
+前期准备工作
+
+安装ES节点，修改配置文件
+
+新节点加入集群
+
+ES集群数据迁移
+
+参考命令，脚本
+
+
+0x00. 前言1. 此次">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SKYNE | Simple Life Simple Me.</title>
+    <link rel="icon" type="image/jpeg" href="http://static.skyne.cn/image/logo-150x150.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="container">
+            <div class="nav-wrapper">
+                <div class="brand-logo">
+                    <a href="/" class="waves-effect waves-light">
+                        <span class="logo-span">SKYNE</span>
+                    </a>
+                </div>
+                
+
+<a href="#" data-activates="mobile-nav" class="button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a id="toggleSearch" class="waves-effect waves-light">
+            <i id="searchIcon" class="mdi-action-search" title="搜索"></i>
+        </a>
+    </li>
+
+</ul>
+
+<div class="side-nav" id="mobile-nav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">SKYNE</div>
+        <div class="logo-desc">
+            
+            THERE IS NO FIRE LIKE LUST, NO GRIP LIKE HATE; THERE IS NO NET LIKE DELUSION, NO RIVER LIKE CRAVING.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/skyne0/" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+
+    <div class="social-link">
+    <a href="https://github.com/skyne0/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:520@skyne.cn" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href class="tooltipped" data-tooltip="微信联系我: Sky02040511" data-position="top" data-delay="50">
+        <i class="fa fa-wechat"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1163046964" class="tooltipped" data-tooltip="QQ联系我: 1163046964" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+</div>
+
+            </div>
+        </div>
+
+        
+        <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/skyne0/" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+</header>
+
+
+
+
+
+<div class="bg-cover post-cover" style="background-image: url('http://static.skyne.cn/image/E-480x270.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        蓝鲸ElasticSearch三节点集群水平扩容至九节点
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ElasticSearch/" target="_blank">
+                                <span class="chip bg-color">ElasticSearch</span>
+                            </a>
+                        
+                            <a href="/tags/蓝鲸/" target="_blank">
+                                <span class="chip bg-color">蓝鲸</span>
+                            </a>
+                        
+                            <a href="/tags/水平扩容/" target="_blank">
+                                <span class="chip bg-color">水平扩容</span>
+                            </a>
+                        
+                            <a href="/tags/集群/" target="_blank">
+                                <span class="chip bg-color">集群</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/蓝鲸/" class="post-category" target="_blank">
+                                蓝鲸
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-08-24
+                </div>
+
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h5 id="本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。"><a href="#本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。" class="headerlink" title="本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。"></a>本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。</h5><ol start="0">
+<li><p>前言</p>
+</li>
+<li><p>ES常用API</p>
+</li>
+<li><p>大致扩容方案</p>
+</li>
+<li><p>前期准备工作</p>
+</li>
+<li><p>安装ES节点，修改配置文件</p>
+</li>
+<li><p>新节点加入集群</p>
+</li>
+<li><p>ES集群数据迁移</p>
+</li>
+<li><p>参考命令，脚本</p>
+</li>
+</ol>
+<h4 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00. 前言"></a>0x00. 前言</h4><pre class=" language-bash"><code class="language-bash">1. 此次ES扩容临危受命，故没有研究ES的很多知识，就着手扩容，故难免有疏漏，甚至错误之处，敬请指正。
+2. 此次扩容耗时很长，主要受分片reroute，rebalance比较慢所致。
+3. 此前没有在意ES集群的索引，文档的日增长量之类的数据，建议扩容前先估算数据再做方案。
+4. 后续自己会继续研究ES的相关知识，也非常感谢其他人分享的经验。
+
+</code></pre>
+<h4 id="0x01-ES常用API"><a href="#0x01-ES常用API" class="headerlink" title="0x01. ES常用API"></a>0x01. ES常用API</h4><h5 id="ES提供了很多RestFul风格的API供我们使用，查看管理集群也少不了这些API接口。"><a href="#ES提供了很多RestFul风格的API供我们使用，查看管理集群也少不了这些API接口。" class="headerlink" title="ES提供了很多RestFul风格的API供我们使用，查看管理集群也少不了这些API接口。"></a>ES提供了很多RestFul风格的API供我们使用，查看管理集群也少不了这些API接口。</h5><h5 id="在这不再贴具体的API的使用方法，管理查看集群最常用的是-cat-cluster-indices等。"><a href="#在这不再贴具体的API的使用方法，管理查看集群最常用的是-cat-cluster-indices等。" class="headerlink" title="在这不再贴具体的API的使用方法，管理查看集群最常用的是_cat, _cluster, _indices等。"></a>在这不再贴具体的API的使用方法，管理查看集群最常用的是_cat, _cluster, _indices等。</h5><h5 id="在ES的官网上有详细的说明和使用方式，注意查看与自己版本相同的文档，官网文档链接"><a href="#在ES的官网上有详细的说明和使用方式，注意查看与自己版本相同的文档，官网文档链接" class="headerlink" title="在ES的官网上有详细的说明和使用方式，注意查看与自己版本相同的文档，官网文档链接"></a>在ES的官网上有详细的说明和使用方式，注意查看与自己版本相同的文档，<a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.4/index.html" target="_blank" rel="noopener">官网文档链接</a></h5><h5 id="另外有相关的扩容问题也可以查询ES的社区，或许有你疑惑的问题。-ES中文社区"><a href="#另外有相关的扩容问题也可以查询ES的社区，或许有你疑惑的问题。-ES中文社区" class="headerlink" title="另外有相关的扩容问题也可以查询ES的社区，或许有你疑惑的问题。 ES中文社区"></a>另外有相关的扩容问题也可以查询ES的社区，或许有你疑惑的问题。 <a href="https://index.elasticsearch.cn/" target="_blank" rel="noopener">ES中文社区</a></h5><h4 id="0x02-大致扩容方案"><a href="#0x02-大致扩容方案" class="headerlink" title="0x02. 大致扩容方案"></a>0x02. 大致扩容方案</h4><h5 id="先介绍下未扩容前的ES集群情况"><a href="#先介绍下未扩容前的ES集群情况" class="headerlink" title="先介绍下未扩容前的ES集群情况"></a>先介绍下未扩容前的ES集群情况</h5><pre class=" language-bash"><code class="language-bash">1. 原集群节点与zk，kafka，redis_cluster混合部署，发生过几次ES导致宕机，进而引发整个蓝鲸平台不可用的事故。
+2. 原集群采用垂直扩容的方式，扩容ES节点的内存和存储，这种方式饮鸩止渴，解决不了根本原因。
+3. 原集群已经Red状态，不能提供服务，其中esb_api_log_community索引有1.1Tb之大，主副分片加起来有2.3Tb
+4. 原集群共有3700+索引，有1w+的未分配分片，活动的分片数只有6k+，三个节点共计占用接近8Tb的磁盘空间
+5. es进程占用的cpu资源非常高，es的bin目录下产生了高达300G的java_xxxpid.hprof内存溢出时的内核堆栈的记录信息
+6. 执行查询类的API，返回数据很慢，执行操作类的如，关闭索引，删除索引等时，返回503，集群已经不能正常执行操作。
+7. 上述可见原ES集群的负载非常大，集群已经不能提供正常的服务和处理集群间的事务。
+</code></pre>
+<h5 id="大致的扩容方案"><a href="#大致的扩容方案" class="headerlink" title="大致的扩容方案"></a>大致的扩容方案</h5><pre class=" language-bash"><code class="language-bash">1. 原先三节点分别拥有所有角色，既master，data和协调器角色，分别参与集群master选举，数据存储，集群间事务处理。
+2. 现在由原先三节点集群水平扩展为九节点集群，九节点分三组角色，
+3. 一组为master和协调器角色，负责维护集群状态和响应client请求，集群内部事务，
+4. 另一组为data和协调器角色，负责存储数据和辅助处理请求和内部事务。最后一组只有data角色，只负责储存数据。
+</code></pre>
+<h5 id="扩容前后的节点配置角色对比"><a href="#扩容前后的节点配置角色对比" class="headerlink" title="扩容前后的节点配置角色对比"></a>扩容前后的节点配置角色对比</h5><h5 id="3-扩容前："><a href="#3-扩容前：" class="headerlink" title="3.扩容前："></a>3.扩容前：</h5><table>
+<thead>
+<tr>
+<th>3节点</th>
+<th>主节点</th>
+<th>数据节点</th>
+<th>协调器</th>
+<th>资源配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>master1</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>１２C／３０GB／７TB</td>
+</tr>
+<tr>
+<td>master2</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>１２C／３０GB／７TB</td>
+</tr>
+<tr>
+<td>master3</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>１２C／３０GB／７TB</td>
+</tr>
+</tbody>
+</table>
+<h5 id="4-扩容后"><a href="#4-扩容后" class="headerlink" title="4. 扩容后"></a>4. 扩容后</h5><table>
+<thead>
+<tr>
+<th>9节点</th>
+<th>主节点</th>
+<th>数据节点</th>
+<th>协调器</th>
+<th>资源配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>master1 ~ master3</td>
+<td>√</td>
+<td>×</td>
+<td>√</td>
+<td>１２C／３０GB／3TB</td>
+</tr>
+<tr>
+<td>data4 ~ data6</td>
+<td>×</td>
+<td>√</td>
+<td>√</td>
+<td>１２C／３０GB／3TB</td>
+</tr>
+<tr>
+<td>data7 ~ data9</td>
+<td>×</td>
+<td>√</td>
+<td>×</td>
+<td>１２C／３０GB／3TB</td>
+</tr>
+</tbody>
+</table>
+<h4 id="0x03-前期准备工作"><a href="#0x03-前期准备工作" class="headerlink" title="0x03. 前期准备工作"></a>0x03. 前期准备工作</h4><pre class=" language-bash"><code class="language-bash">1.通过命令或者脚本手动删除18年以前和三个月以前的索引，通过匹配索引名的日期。先降低集群的工作量和迁移数量。
+
+2.通过脚本删除esb_api_log_community的一个月以前的数据，集群状态异常时可能删除不掉，陷入无响应，或者返回503超时。此时先不删除，等集群恢复处理能力后再删除。
+
+3.关闭索引量较大的索引，关闭集群的Rebalance重平衡，关闭集群的reroute再路由
+
+4.如果想加快集群的分片迁移速度可以将所有主分片的副本分片数量置为0，这样将可以减少一半的分片数量，风险是有可能丢失数据。
+
+5.新加入的主机需要保持和蓝鲸安装时一样的主机环境，包括关闭防火墙，修改文件句柄数等等。
+</code></pre>
+<h4 id="0x04-安装ES节点，修改配置文件"><a href="#0x04-安装ES节点，修改配置文件" class="headerlink" title="0x04. 安装ES节点，修改配置文件"></a>0x04. 安装ES节点，修改配置文件</h4><h5 id="1-备份中控机的install-config文件，并将新节点主机IP按照格式填入该文件中"><a href="#1-备份中控机的install-config文件，并将新节点主机IP按照格式填入该文件中" class="headerlink" title="1.备份中控机的install.config文件，并将新节点主机IP按照格式填入该文件中"></a>1.备份中控机的install.config文件，并将新节点主机IP按照格式填入该文件中</h5><h5 id="2-修改es使用的JVM的参数，配置免密，执行预检，预检完成后，同步common，同步es"><a href="#2-修改es使用的JVM的参数，配置免密，执行预检，预检完成后，同步common，同步es" class="headerlink" title="2.修改es使用的JVM的参数，配置免密，执行预检，预检完成后，同步common，同步es"></a>2.修改es使用的JVM的参数，配置免密，执行预检，预检完成后，同步common，同步es</h5><pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 修改JVM参数</span>
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># vim render.rc </span>
+    <span class="token keyword">:</span> <span class="token variable">${MAX_ES_MEM:=30}</span>
+    <span class="token keyword">:</span> <span class="token variable">${MIN_ES_MEM:=30}</span>
+:wq
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># bash configure_ssh_without_pass</span>
+
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># ./precheck</span>
+
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># ./bkeec sync common</span>
+
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># ./bkeec sync es</span>
+</code></pre>
+<h5 id="3-重新渲染安装es"><a href="#3-重新渲染安装es" class="headerlink" title="3.重新渲染安装es"></a>3.重新渲染安装es</h5><pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 修改JVM参数</span>
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># ./bkeec render </span>
+
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># ./bkeec install es</span>
+
+</code></pre>
+<h5 id="4-安装完成后，不要启动es，逐个修改es配置文件。"><a href="#4-安装完成后，不要启动es，逐个修改es配置文件。" class="headerlink" title="4.安装完成后，不要启动es，逐个修改es配置文件。"></a>4.安装完成后，不要启动es，逐个修改es配置文件。</h5><h5 id="5-原三节点的es配置文件先不用修改，discovery-zen-ping-unicast-hosts该配置项只渲染进了三个install-config文件中前三个，也就是原节点的IP。可以修改三原节点的node-name为es-master1-es-master2-es-master3便于区分。"><a href="#5-原三节点的es配置文件先不用修改，discovery-zen-ping-unicast-hosts该配置项只渲染进了三个install-config文件中前三个，也就是原节点的IP。可以修改三原节点的node-name为es-master1-es-master2-es-master3便于区分。" class="headerlink" title="5.原三节点的es配置文件先不用修改，discovery.zen.ping.unicast.hosts该配置项只渲染进了三个install.config文件中前三个，也就是原节点的IP。可以修改三原节点的node.name为es-master1,es-master2,es-master3便于区分。"></a>5.原三节点的es配置文件先不用修改，discovery.zen.ping.unicast.hosts该配置项只渲染进了三个install.config文件中前三个，也就是原节点的IP。可以修改三原节点的node.name为es-master1,es-master2,es-master3便于区分。</h5><h5 id="6-剩余六个节点则按照，前三个和后三个来划分，前三个修改配置文件为node-master：-false，node-ingest-true，node-name-es-data4-依次类推。后三个节点的与此类似但node-ingest-false，这样配置文件就修改完毕。"><a href="#6-剩余六个节点则按照，前三个和后三个来划分，前三个修改配置文件为node-master：-false，node-ingest-true，node-name-es-data4-依次类推。后三个节点的与此类似但node-ingest-false，这样配置文件就修改完毕。" class="headerlink" title="6.剩余六个节点则按照，前三个和后三个来划分，前三个修改配置文件为node.master： false，node.ingest:true，node.name: es-data4,依次类推。后三个节点的与此类似但node.ingest: false，这样配置文件就修改完毕。"></a>6.剩余六个节点则按照，前三个和后三个来划分，前三个修改配置文件为node.master： false，node.ingest:true，node.name: es-data4,依次类推。后三个节点的与此类似但node.ingest: false，这样配置文件就修改完毕。</h5><pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 下面是data节点的配置</span>
+cluster.name: bkee-es
+node.master: <span class="token boolean">false</span>
+node.data: <span class="token boolean">true</span>
+node.ingest: <span class="token boolean">true</span>
+node.name: es-data4
+node.attr.tag: cold
+path.data: /data/bkee/public/es/data
+path.logs: /data/bkee/logs/es
+bootstrap.memory_lock: <span class="token boolean">false</span>
+bootstrap.system_call_filter: <span class="token boolean">false</span>
+network.host: <span class="token string">"data-IP4"</span>
+http.port: 10004
+transport.tcp.port: 9300
+discovery.zen.ping.unicast.hosts: <span class="token punctuation">[</span><span class="token string">"master1-IP"</span>, <span class="token string">"master2-IP"</span>, <span class="token string">"master3-IP"</span><span class="token punctuation">]</span>
+discovery.zen.minimum_master_nodes: 2
+thread_pool.search.size: 1000
+thread_pool.search.queue_size: 1000
+thread_pool.bulk.queue_size: 1000
+cluster.routing.allocation.same_shard.host: <span class="token boolean">true</span>
+http.cors.enabled: <span class="token boolean">true</span>
+http.cors.allow-origin: <span class="token string">"*"</span>
+</code></pre>
+<h4 id="0x05-新节点加入集群"><a href="#0x05-新节点加入集群" class="headerlink" title="0x05. 新节点加入集群"></a>0x05. 新节点加入集群</h4><h4 id="1-修改完配置文件后，登录data节点所在主机，source-control-rc后，执行start-es启动es，并等待该节点加入集群后，依次将其他节点加入集群中。"><a href="#1-修改完配置文件后，登录data节点所在主机，source-control-rc后，执行start-es启动es，并等待该节点加入集群后，依次将其他节点加入集群中。" class="headerlink" title="1.修改完配置文件后，登录data节点所在主机，source control.rc后，执行start_es启动es，并等待该节点加入集群后，依次将其他节点加入集群中。"></a>1.修改完配置文件后，登录data节点所在主机，source control.rc后，执行start_es启动es，并等待该节点加入集群后，依次将其他节点加入集群中。</h4><pre class=" language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># source control.rc </span>
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># </span>
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># stop_es</span>
+</code></pre>
+<h4 id="2-此时因为关闭重平衡和重路由，所以不会往数据节点迁移数据。然后重新打开集群的重平衡和重路由，等待集群分片分配，此过程会很漫长。"><a href="#2-此时因为关闭重平衡和重路由，所以不会往数据节点迁移数据。然后重新打开集群的重平衡和重路由，等待集群分片分配，此过程会很漫长。" class="headerlink" title="2.此时因为关闭重平衡和重路由，所以不会往数据节点迁移数据。然后重新打开集群的重平衡和重路由，等待集群分片分配，此过程会很漫长。"></a>2.此时因为关闭重平衡和重路由，所以不会往数据节点迁移数据。然后重新打开集群的重平衡和重路由，等待集群分片分配，此过程会很漫长。</h4><pre class=" language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl -H "Content-Type: application/json" -XPUT "es.service.consul:10004/_cluster/settings" -d '{"transient":{"cluster.routing.allocation.enable":"all"}}'</span>
+
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl -H "Content-Type: application/json" -XPUT "es.service.consul:10004/_cluster/settings" -d '{"transient":{"cluster.routing.rebalance.enable":"all"}}'</span>
+</code></pre>
+<h4 id="3-此时通过查看集群中的分片情况可以看到，分片正在往新节点上迁移，只是速度有点慢"><a href="#3-此时通过查看集群中的分片情况可以看到，分片正在往新节点上迁移，只是速度有点慢" class="headerlink" title="3.此时通过查看集群中的分片情况可以看到，分片正在往新节点上迁移，只是速度有点慢"></a>3.此时通过查看集群中的分片情况可以看到，分片正在往新节点上迁移，只是速度有点慢</h4><pre class=" language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl -s "es.service.consul:10004/_cat/allocation?v&amp;pretty"</span>
+
+</code></pre>
+<h4 id="0x06-ES集群数据迁移"><a href="#0x06-ES集群数据迁移" class="headerlink" title="0x06. ES集群数据迁移"></a>0x06. ES集群数据迁移</h4><h5 id="1-等待集群中的分片重新分配完毕后，在原先三个节点上逐个禁止分片，通过设置cluster-routing-allocation-exclude-ip来禁止某IP参与数据分片。"><a href="#1-等待集群中的分片重新分配完毕后，在原先三个节点上逐个禁止分片，通过设置cluster-routing-allocation-exclude-ip来禁止某IP参与数据分片。" class="headerlink" title="1.等待集群中的分片重新分配完毕后，在原先三个节点上逐个禁止分片，通过设置cluster.routing.allocation.exclude._ip来禁止某IP参与数据分片。"></a>1.等待集群中的分片重新分配完毕后，在原先三个节点上逐个禁止分片，通过设置cluster.routing.allocation.exclude._ip来禁止某IP参与数据分片。</h5><pre class=" language-bash"><code class="language-bash">curl -H <span class="token string">"Content-Type: application/json"</span> -XPUT es.service.consul:10004/_cluster/settings -d <span class="token string">'{ "transient" : { "cluster.routing.allocation.exclude._ip" : "master1-IP" } }'</span>
+<span class="token comment" spellcheck="true"># 此时可以注意到该节点的分片数一点点减少</span>
+</code></pre>
+<h5 id="2-等待该IP上无分片，修改该IP的ES配置文件中的node-data-false，重启该节点，则该节点便不再作为数据节点。"><a href="#2-等待该IP上无分片，修改该IP的ES配置文件中的node-data-false，重启该节点，则该节点便不再作为数据节点。" class="headerlink" title="2.等待该IP上无分片，修改该IP的ES配置文件中的node.data:false，重启该节点，则该节点便不再作为数据节点。"></a>2.等待该IP上无分片，修改该IP的ES配置文件中的node.data:false，重启该节点，则该节点便不再作为数据节点。</h5><h5 id="3-对原三台ES节点轮流执行1-2步骤，直至三台节点重启完毕，集群恢复正常。"><a href="#3-对原三台ES节点轮流执行1-2步骤，直至三台节点重启完毕，集群恢复正常。" class="headerlink" title="3.对原三台ES节点轮流执行1,2步骤，直至三台节点重启完毕，集群恢复正常。"></a>3.对原三台ES节点轮流执行1,2步骤，直至三台节点重启完毕，集群恢复正常。</h5><h5 id="4-如果此前设置过副本分片数量为0，记得恢复过来。"><a href="#4-如果此前设置过副本分片数量为0，记得恢复过来。" class="headerlink" title="4.如果此前设置过副本分片数量为0，记得恢复过来。"></a>4.如果此前设置过副本分片数量为0，记得恢复过来。</h5><h5 id="5-此后该集群再加节点或者删除节点时，便不需要再重启任何节点了，灵活性很大。"><a href="#5-此后该集群再加节点或者删除节点时，便不需要再重启任何节点了，灵活性很大。" class="headerlink" title="5.此后该集群再加节点或者删除节点时，便不需要再重启任何节点了，灵活性很大。"></a>5.此后该集群再加节点或者删除节点时，便不需要再重启任何节点了，灵活性很大。</h5><h5 id="6-下图是集群正常后一些基础信息"><a href="#6-下图是集群正常后一些基础信息" class="headerlink" title="6. 下图是集群正常后一些基础信息"></a>6. 下图是集群正常后一些基础信息</h5><p><img src="http://github.skyne.cn/es/es.png" alt="基础信息"></p>
+<h4 id="7-参考命令，脚本"><a href="#7-参考命令，脚本" class="headerlink" title="7. 参考命令，脚本"></a>7. 参考命令，脚本</h4><h5 id="批量删除2018年以前的索引"><a href="#批量删除2018年以前的索引" class="headerlink" title="批量删除2018年以前的索引"></a>批量删除2018年以前的索引</h5><pre class=" language-bash"><code class="language-bash"><span class="token function">source</span>    /data/install/utils.fc
+index_names<span class="token operator">=</span><span class="token punctuation">$(</span>curl -s <span class="token string">"es.service.consul:10004/_cat/indices?v"</span> <span class="token operator">|</span><span class="token function">awk</span> <span class="token string">'{print <span class="token variable">$3</span>}'</span> <span class="token operator">|</span><span class="token function">grep</span> 2018<span class="token punctuation">)</span>
+<span class="token keyword">for</span> name <span class="token keyword">in</span> <span class="token variable">${index_names}</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token keyword">echo</span> <span class="token string">"Delete index <span class="token variable">${name}</span>"</span>
+    curl -XDELETE <span class="token string">"es.service.consul:10004/<span class="token variable">${name}</span>?pretty"</span>
+<span class="token keyword">done</span>
+</code></pre>
+<h5 id="删除esb-api-log-community-90天以前的索引"><a href="#删除esb-api-log-community-90天以前的索引" class="headerlink" title="删除esb_api_log_community 90天以前的索引"></a>删除esb_api_log_community 90天以前的索引</h5><pre class=" language-bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+<span class="token keyword">echo</span> <span class="token string">"Before esb_api_log_community delete:"</span>
+curl -s <span class="token string">"es.service.consul:10004/_cat/indices/esb_api_log_community?v"</span>
+
+curl -XPOST <span class="token string">"es.service.consul:10004/esb_api_log_community/_delete_by_query?pretty"</span> -d <span class="token string">'{
+    "query": {
+        "range": {
+            "@timestamp": {
+                "lt": "now-90d",
+                "format": "epoch_millis"
+            }
+        }
+    }
+}'</span>
+
+<span class="token keyword">echo</span> -e <span class="token string">"\n After esb_api_log_community delete_by_query:"</span>
+curl -s <span class="token string">"es.service.consul:10004/_cat/indices/esb_api_log_community"</span>
+</code></pre>
+<h5 id="关闭集群Reroute-Rebalance"><a href="#关闭集群Reroute-Rebalance" class="headerlink" title="关闭集群Reroute,Rebalance"></a>关闭集群Reroute,Rebalance</h5><pre class=" language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl -H "Content-Type: application/json" -XPUT "es.service.consul:10004/_cluster/settings" -d '{"transient":{"cluster.routing.allocation.enable":"none"}}'</span>
+
+<span class="token punctuation">[</span>root@nginx-1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl -H "Content-Type: application/json" -XPUT "es.service.consul:10004/_cluster/settings" -d '{"transient":{"cluster.routing.rebalance.enable":"none"}}'</span>
+</code></pre>
+<h4 id="关闭索引"><a href="#关闭索引" class="headerlink" title="关闭索引"></a>关闭索引</h4><pre class=" language-bash"><code class="language-bash">curl -XPOST <span class="token string">'es.service.consul:10004/<span class="token variable">${index_name}</span>/_close/'</span> 
+</code></pre>
+<h4 id="索引迁移"><a href="#索引迁移" class="headerlink" title="索引迁移"></a>索引迁移</h4><pre class=" language-bash"><code class="language-bash">curl -H <span class="token string">"Content-Type: application/json"</span> -XPUT <span class="token string">"es.service.consul:10004/_cluster/settings"</span> -d <span class="token string">'{ "transient" : { "cluster.routing.allocation.exclude._ip" : "IP" } }'</span>
+</code></pre>
+
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="http://www.skyne.cn" class="b-link-green">SKYNE</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/08/24/lan-jing-elasticsearch-san-jie-dian-ji-qun-shui-ping-kuo-rong-zhi-jiu-jie-dian/" class="b-link-green">蓝鲸ElasticSearch三节点集群水平扩容至九节点</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2019/08/24/lan-jing-elasticsearch-san-jie-dian-ji-qun-shui-ping-kuo-rong-zhi-jiu-jie-dian/">
+                    <div class="card-image">
+                        
+                        <img src="http://static.skyne.cn/image/E-480x270.jpg" class="responsive-img" alt="蓝鲸ElasticSearch三节点集群水平扩容至九节点">
+                        
+                        <span class="card-title">蓝鲸ElasticSearch三节点集群水平扩容至九节点</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。
+前言
+
+ES常用API
+
+大致扩容方案
+
+前期准备工作
+
+安装ES节点，修改配置文件
+
+新节点加入集群
+
+ES集群数据迁移
+
+参考命令，脚本
+
+
+0x00. 前言1. 此次</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/蓝鲸/" class="post-category" target="_blank">
+                                    蓝鲸
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ElasticSearch/" target="_blank">
+                        <span class="chip bg-color">ElasticSearch</span>
+                    </a>
+                    
+                    <a href="/tags/蓝鲸/" target="_blank">
+                        <span class="chip bg-color">蓝鲸</span>
+                    </a>
+                    
+                    <a href="/tags/水平扩容/" target="_blank">
+                        <span class="chip bg-color">水平扩容</span>
+                    </a>
+                    
+                    <a href="/tags/集群/" target="_blank">
+                        <span class="chip bg-color">集群</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/07/24/li-yong-cdn-nei-rong-fen-fa-wang-lu-jia-su-github-de-ge-ren-bo-ke/">
+                    <div class="card-image">
+                        
+                        <img src="http://static.skyne.cn/image/C-480x270.jpg" class="responsive-img" alt="利用CDN内容分发网络加速Github的个人博客">
+                        
+                        <span class="card-title">利用CDN内容分发网络加速Github的个人博客</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">0x01 简述背景
+在自己大三时，腾讯云搞活动，学生资格可以每月一元购买1C1G的50G存储的云主机，当时自己就买了一台，用到了现在。
+当时感觉从事IT的好像都写博客，自己不是太喜欢写东西，但还是感觉有点意思，便跟着网上的教程，利用Word</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Github/" class="post-category" target="_blank">
+                                    Github
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Github/" target="_blank">
+                        <span class="chip bg-color">Github</span>
+                    </a>
+                    
+                    <a href="/tags/CDN/" target="_blank">
+                        <span class="chip bg-color">CDN</span>
+                    </a>
+                    
+                    <a href="/tags/内容分发网络/" target="_blank">
+                        <span class="chip bg-color">内容分发网络</span>
+                    </a>
+                    
+                    <a href="/tags/个人博客/" target="_blank">
+                        <span class="chip bg-color">个人博客</span>
+                    </a>
+                    
+                    <a href="/tags/域名/" target="_blank">
+                        <span class="chip bg-color">域名</span>
+                    </a>
+                    
+                    <a href="/tags/腾讯云/" target="_blank">
+                        <span class="chip bg-color">腾讯云</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://skyne0.github.io/" target="_blank">SKYNE</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/skyne0/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:520@skyne.cn" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href class="tooltipped" data-tooltip="微信联系我: Sky02040511" data-position="top" data-delay="50">
+        <i class="fa fa-wechat"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1163046964" class="tooltipped" data-tooltip="QQ联系我: 1163046964" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input" autofocus>
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/js/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
