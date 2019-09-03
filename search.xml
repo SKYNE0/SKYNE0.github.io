@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>Apache+Apaxy搭建并美化目录浏览</title>
+      <link href="/2019/09/03/apache-apaxy-da-jian-bing-mei-hua-mu-lu-liu-lan/"/>
+      <url>/2019/09/03/apache-apaxy-da-jian-bing-mei-hua-mu-lu-liu-lan/</url>
+      
+        <content type="html"><![CDATA[<h3 id="0x01-搭建背景"><a href="#0x01-搭建背景" class="headerlink" title="0x01 搭建背景"></a>0x01 搭建背景</h3><pre class=" language-bash"><code class="language-bash">1. 百度云上有些课程想下载下来供公司同事一起学习2. 百度云下载太慢，用户体验很差。不如搭建个局域网的WEB服务供大家在线学习3. 课程主要是有些PDF和视频，所以很方便使用Apache或者Nginx搭建个Web服务4. 本次是在Windows Server2012安装和使用Apache</code></pre><h3 id="0x02-主要操作步骤"><a href="#0x02-主要操作步骤" class="headerlink" title="0x02 主要操作步骤"></a>0x02 主要操作步骤</h3><pre class=" language-bash"><code class="language-bash">1. 安装Apache，修改配置文件2. 安装Apaxy美化目录浏览3. 有条件的可以内部设置个域名解析</code></pre><h3 id="0x03-安装配置Apache"><a href="#0x03-安装配置Apache" class="headerlink" title="0x03 安装配置Apache"></a>0x03 安装配置Apache</h3><h5 id="首先前往Apache官网下载2-4版本，如何下载和安装，请参考这篇经验，在此不再累述。"><a href="#首先前往Apache官网下载2-4版本，如何下载和安装，请参考这篇经验，在此不再累述。" class="headerlink" title="首先前往Apache官网下载2.4版本，如何下载和安装，请参考这篇经验，在此不再累述。"></a>首先前往Apache官网下载2.4版本，如何下载和安装，请参考<a href="https://jingyan.baidu.com/article/29697b912f6539ab20de3cf8.html" target="_blank" rel="noopener">这篇经验</a>，在此不再累述。</h5><h5 id="需要注意的是在这里使用的2-4版本，一定要使用此版本或者高于此版本。"><a href="#需要注意的是在这里使用的2-4版本，一定要使用此版本或者高于此版本。" class="headerlink" title="需要注意的是在这里使用的2.4版本，一定要使用此版本或者高于此版本。"></a>需要注意的是在这里使用的2.4版本，一定要使用此版本或者高于此版本。</h5><h5 id="使用此版本能最大程度减轻我们配置的工作量"><a href="#使用此版本能最大程度减轻我们配置的工作量" class="headerlink" title="使用此版本能最大程度减轻我们配置的工作量"></a>使用此版本能最大程度减轻我们配置的工作量</h5><h5 id="安装完Apache后，就需要修改配置文件来配置Web服务器"><a href="#安装完Apache后，就需要修改配置文件来配置Web服务器" class="headerlink" title="安装完Apache后，就需要修改配置文件来配置Web服务器"></a>安装完Apache后，就需要修改配置文件来配置Web服务器</h5><h5 id="在解压后的Apache24目录下的conf目录下，httpd-conf不需要修改，保持默认即可。"><a href="#在解压后的Apache24目录下的conf目录下，httpd-conf不需要修改，保持默认即可。" class="headerlink" title="在解压后的Apache24目录下的conf目录下，httpd.conf不需要修改，保持默认即可。"></a>在解压后的Apache24目录下的conf目录下，httpd.conf不需要修改，保持默认即可。</h5><h5 id="然后进入extra目录，我们新建一个httpd-static-conf文件，写入下面的内容。"><a href="#然后进入extra目录，我们新建一个httpd-static-conf文件，写入下面的内容。" class="headerlink" title="然后进入extra目录，我们新建一个httpd-static.conf文件，写入下面的内容。"></a>然后进入extra目录，我们新建一个httpd-static.conf文件，写入下面的内容。</h5><pre class=" language-bash"><code class="language-bash">Alias / <span class="token string">"E:/"</span> <span class="token comment" spellcheck="true"># 把/映射到E盘，比如/static "E:/stat" 则访问http://xxxx/static/就会索引stat目录下内容</span><span class="token operator">&lt;</span>Directory <span class="token string">"E:/"</span><span class="token operator">></span>   <span class="token comment" spellcheck="true">#开启目录列表索引模式</span>    Options Indexes FollowSymLinks Multiviews      MultiviewsMatch Any    AllowOverride All    IndexOptions Charset<span class="token operator">=</span>UTF-8 FancyIndexing ScanHTMLTitles NameWidth<span class="token operator">=</span>128 DescriptionWidth<span class="token operator">=</span>256 HTMLTable VersionSort FoldersFirst    ServerSignature Off <span class="token comment" spellcheck="true"># 关闭服务器标识</span>    IndexIgnore  <span class="token variable">$RECYCLE</span>.BIN  System*  <span class="token comment" spellcheck="true">#不索引文件或者目录，根据实际情况排除</span>    Require all granted<span class="token operator">&lt;</span>/Directory<span class="token operator">></span></code></pre><h5 id="完成后保存，启动或者重启Apache，访问自身IP试试。可以Win键-R键"><a href="#完成后保存，启动或者重启Apache，访问自身IP试试。可以Win键-R键" class="headerlink" title="完成后保存，启动或者重启Apache，访问自身IP试试。可以Win键 + Ｒ键"></a>完成后保存，启动或者重启Apache，访问自身IP试试。可以Win键 + Ｒ键</h5><h5 id="在运行窗口中输入services-msc进入服务，找到Apache，重启即可。"><a href="#在运行窗口中输入services-msc进入服务，找到Apache，重启即可。" class="headerlink" title="在运行窗口中输入services.msc进入服务，找到Apache，重启即可。"></a>在运行窗口中输入services.msc进入服务，找到Apache，重启即可。</h5><h5 id="此时一般可以正确看到自己配置的目录下的内容，但一般默认的比较难看，不太美观，下面我们再使用Apaxy美化一下"><a href="#此时一般可以正确看到自己配置的目录下的内容，但一般默认的比较难看，不太美观，下面我们再使用Apaxy美化一下" class="headerlink" title="此时一般可以正确看到自己配置的目录下的内容，但一般默认的比较难看，不太美观，下面我们再使用Apaxy美化一下"></a>此时一般可以正确看到自己配置的目录下的内容，但一般默认的比较难看，不太美观，下面我们再使用Apaxy美化一下</h5><h3 id="0x03-安装配置Apaxy"><a href="#0x03-安装配置Apaxy" class="headerlink" title="0x03 安装配置Apaxy"></a>0x03 安装配置Apaxy</h3><h5 id="我们可以配置Apache的配置文件指定文件的类型和使用的图标，也可以达到美化的效果，但还是不太美观。"><a href="#我们可以配置Apache的配置文件指定文件的类型和使用的图标，也可以达到美化的效果，但还是不太美观。" class="headerlink" title="我们可以配置Apache的配置文件指定文件的类型和使用的图标，也可以达到美化的效果，但还是不太美观。"></a>我们可以配置Apache的配置文件指定文件的类型和使用的图标，也可以达到美化的效果，但还是不太美观。</h5><h5 id="Apaxy是一个可定制的主题，用于增强浏览web目录的体验。"><a href="#Apaxy是一个可定制的主题，用于增强浏览web目录的体验。" class="headerlink" title="Apaxy是一个可定制的主题，用于增强浏览web目录的体验。"></a>Apaxy是一个可定制的主题，用于增强浏览web目录的体验。</h5><h5 id="它使用mod-autoindex-Apache模块和一些css来覆盖目录列表的默认样式。"><a href="#它使用mod-autoindex-Apache模块和一些css来覆盖目录列表的默认样式。" class="headerlink" title="它使用mod autoindex Apache模块和一些css来覆盖目录列表的默认样式。"></a>它使用mod autoindex Apache模块和一些css来覆盖目录列表的默认样式。</h5><h5 id="首先我们下载Apaxy，在这里下载"><a href="#首先我们下载Apaxy，在这里下载" class="headerlink" title="首先我们下载Apaxy，在这里下载"></a>首先我们下载Apaxy，<a href="https://github.com/oupala/apaxy/releases" target="_blank" rel="noopener">在这里下载</a></h5><h5 id="下载后解压，解压后可以看到有个apaxy目录，把该目录下的theme目录，favicon-ico-htaccess-txt文件复制到项目根目录下"><a href="#下载后解压，解压后可以看到有个apaxy目录，把该目录下的theme目录，favicon-ico-htaccess-txt文件复制到项目根目录下" class="headerlink" title="下载后解压，解压后可以看到有个apaxy目录，把该目录下的theme目录，favicon.ico,htaccess.txt文件复制到项目根目录下"></a>下载后解压，解压后可以看到有个apaxy目录，把该目录下的theme目录，favicon.ico,htaccess.txt文件复制到项目根目录下</h5><h5 id="比如刚才Apache配置文件中填写的是-“E-“-则把它们复制到该目录下，也就是与你的项目目录同级"><a href="#比如刚才Apache配置文件中填写的是-“E-“-则把它们复制到该目录下，也就是与你的项目目录同级" class="headerlink" title="比如刚才Apache配置文件中填写的是 “E:/“ 则把它们复制到该目录下，也就是与你的项目目录同级"></a>比如刚才Apache配置文件中填写的是 “E:/“ 则把它们复制到该目录下，也就是与你的项目目录同级</h5><h5 id="接着打开-htaccess-txt-使用软件sublime或者nodepad-把-FOLDERNAME-替换成项目根路径"><a href="#接着打开-htaccess-txt-使用软件sublime或者nodepad-把-FOLDERNAME-替换成项目根路径" class="headerlink" title="接着打开 htaccess.txt 使用软件sublime或者nodepad++把 {FOLDERNAME} 替换成项目根路径"></a>接着打开 htaccess.txt 使用软件sublime或者nodepad++把 {FOLDERNAME} 替换成项目根路径</h5><h5 id="比如刚刚我们填写的是-“E-“-那我们替换成-即可，简言之就是我们的-我们的根目录"><a href="#比如刚刚我们填写的是-“E-“-那我们替换成-即可，简言之就是我们的-我们的根目录" class="headerlink" title="比如刚刚我们填写的是 “E:/“ 那我们替换成 / 即可，简言之就是我们的 / + 我们的根目录"></a>比如刚刚我们填写的是 “E:/“ 那我们替换成 / 即可，简言之就是我们的 / + 我们的根目录</h5><h5 id="比如你的项目根目录是-“E-static-files”-那你替换成-files即可。"><a href="#比如你的项目根目录是-“E-static-files”-那你替换成-files即可。" class="headerlink" title="比如你的项目根目录是 “E:/static/files” 那你替换成 /files即可。"></a>比如你的项目根目录是 “E:/static/files” 那你替换成 /files即可。</h5><h5 id="然后重命名htaccess-txt-为-htaccess-Windows无法重命名的话，在theme目录下有一个-htaccess文件"><a href="#然后重命名htaccess-txt-为-htaccess-Windows无法重命名的话，在theme目录下有一个-htaccess文件" class="headerlink" title="然后重命名htaccess.txt 为.htaccess, Windows无法重命名的话，在theme目录下有一个.htaccess文件"></a>然后重命名htaccess.txt 为.htaccess, Windows无法重命名的话，在theme目录下有一个.htaccess文件</h5><h5 id="接着刷新页面就可以看到变化，确实变美观了很多很多。"><a href="#接着刷新页面就可以看到变化，确实变美观了很多很多。" class="headerlink" title="接着刷新页面就可以看到变化，确实变美观了很多很多。"></a>接着刷新页面就可以看到变化，确实变美观了很多很多。</h5><h5 id="但你可能注意到怎么有个-HEADER-MASSAGE-FOOTER-MASSAGE"><a href="#但你可能注意到怎么有个-HEADER-MASSAGE-FOOTER-MASSAGE" class="headerlink" title="但你可能注意到怎么有个 {HEADER_MASSAGE}  {FOOTER_MASSAGE}"></a>但你可能注意到怎么有个 {HEADER_MASSAGE}  {FOOTER_MASSAGE}</h5><h5 id="这两个可以在theme目录下有header-html-和-footer-html文件中，按照自己需要修改即可"><a href="#这两个可以在theme目录下有header-html-和-footer-html文件中，按照自己需要修改即可" class="headerlink" title="这两个可以在theme目录下有header.html 和 footer.html文件中，按照自己需要修改即可"></a>这两个可以在theme目录下有header.html 和 footer.html文件中，按照自己需要修改即可</h5><p><img src="http://github.skyne.cn/apache/Apache1.png" alt="目录浏览"><br><img src="http://github.skyne.cn/apache/Apache2.png" alt="文件浏览"><br><img src="http://github.skyne.cn/apache/Apache3.png" alt="视频浏览"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Apache </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Apache </tag>
+            
+            <tag> Apaxy </tag>
+            
+            <tag> 目录浏览 </tag>
+            
+            <tag> 美化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>蓝鲸ElasticSearch三节点集群水平扩容至九节点</title>
       <link href="/2019/08/24/lan-jing-elasticsearch-san-jie-dian-ji-qun-shui-ping-kuo-rong-zhi-jiu-jie-dian/"/>
       <url>/2019/08/24/lan-jing-elasticsearch-san-jie-dian-ji-qun-shui-ping-kuo-rong-zhi-jiu-jie-dian/</url>
@@ -86,11 +117,11 @@
       
         <tags>
             
-            <tag> Docker </tag>
-            
             <tag> Win10 </tag>
             
             <tag> 家庭版 </tag>
+            
+            <tag> Docker </tag>
             
         </tags>
       
@@ -115,13 +146,13 @@
       
         <tags>
             
+            <tag> Docker </tag>
+            
             <tag> 腾讯蓝鲸 </tag>
             
             <tag> Zabbix </tag>
             
             <tag> 故障自愈 </tag>
-            
-            <tag> Docker </tag>
             
         </tags>
       
@@ -233,9 +264,9 @@
       
         <tags>
             
-            <tag> Django </tag>
-            
             <tag> 腾讯云 </tag>
+            
+            <tag> Django </tag>
             
             <tag> Apache </tag>
             
