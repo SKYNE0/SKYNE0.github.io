@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>蓝鲸Redis_cluster三节点集群故障修改为两节点集群</title>
+      <link href="/2019/10/26/lan-jing-redis-cluster-san-jie-dian-ji-qun-gu-zhang-xiu-gai-wei-liang-jie-dian-ji-qun/"/>
+      <url>/2019/10/26/lan-jing-redis-cluster-san-jie-dian-ji-qun-gu-zhang-xiu-gai-wei-liang-jie-dian-ji-qun/</url>
+      
+        <content type="html"><![CDATA[<h5 id="本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。"><a href="#本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。" class="headerlink" title="本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。"></a>本文主要讲述下，蓝鲸ES集群如何进行水平扩容，主要分以下几个方面。</h5><ol start="0"><li><p>Redis Sentinel简介</p></li><li><p>故障原因</p></li><li><p>故障解决</p></li><li><p>总结</p></li></ol><h4 id="0x00-Redis-Sentinel简介"><a href="#0x00-Redis-Sentinel简介" class="headerlink" title="0x00. Redis Sentinel简介"></a>0x00. Redis Sentinel简介</h4><pre><code>1. Sentinel(哨兵)进程是用于监控redis集群中Master主服务器工作的状态，在Master主服务器发生故障的时候，可以实现Master和Slave服务器的切换，保证系统的高可用2. 每个哨兵(Sentinel)进程会向其它哨兵(Sentinel)、Master、Slave定时发送消息，以确认对方是否”活”着，如果发现对方在指定配置时间(可配置的)内未得到回应，则暂时认为对方已掉线，3. 也就是所谓的”主观认为宕机” ，英文名称：Subjective Down，简称SDOWN。有主观宕机，肯定就有客观宕机。当“哨兵群”中的多数Sentinel进程在对Master主服务器做出 SDOWN 的判断，4. 并且通过 SENTINEL is-master-down-by-addr 命令互相交流之后，得出的Master Server下线判断，这种方式就是“客观宕机”，英文名称是：Objectively Down， 简称 ODOWN。5. 通过一定的vote算法，从剩下的slave从服务器节点中，选一台提升为Master服务器节点，然后自动修改相关配置，并开启故障转移（failover）。</code></pre><pre><code>1. Sentinel（哨兵）进程的作用2. 监控(Monitoring): 哨兵(sentinel) 会不断地检查你的Master和Slave是否运作正常3. 提醒(Notification)：当被监控的某个Redis节点出现问题时, 哨兵(sentinel) 可以通过 API 向管理员或者其他应用程序发送通知4. 自动故障迁移(Automatic failover)：当一个Master不能正常工作时，哨兵(sentinel) 会开始一次自动故障迁移操作，它会将失效Master的其中一个Slave升级为新的Master</code></pre><h4 id="0x01-故障原因"><a href="#0x01-故障原因" class="headerlink" title="0x01. 故障原因"></a>0x01. 故障原因</h4><pre><code>1. 此次故障是在迁移蓝鲸主机时，因为ES的数据量较大，迁移时间长，所以轮流迁移ES集群的三台节点主机2. Redis与ES混合部署，因此导致了Redis集群的不可用，进而影响了作业平台无法执行作业 3. 在企业版蓝鲸平台中，一般是两台Redis组成Master-Slave主从模式，并与GSE混合部署。主要是缓存agent，采集器上报的数据4. 还有另外三台Redis组成高可用的Sentinel模式，作业平台的任务执行结果放在其中，因此该集群异常时会影响作业平台5. 作业平台作为蓝鲸平台的重要组成部分，作业平台的异常会影响很多功能和模块</code></pre><pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 下面是企业版蓝鲸五节点的模块组件分布</span><span class="token punctuation">[</span>root@rbtnode1 install<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># cat install.config.5ip.sample </span>10.0.1.2 gse,license,redis,consul,appo,mysql,bkdata,beanstalk,rabbitmq,etcd10.0.1.3 gse,license,redis,consul,appo,mysql,bkdata,paas,cmdb,job,beanstalk10.0.1.4 nginx,zk,redis_cluster,es,kafka,fta,influxdb,etcd,mongodb10.0.1.4 nginx,zk,redis_cluster,es,kafka,fta,nfs,influxdb,etcd,mongodb10.0.1.5 paas,cmdb,job,zk,kafka,es,rabbitmq,appt,consul,redis_cluster,mongodb</code></pre><pre><code>1. 故障原因就在于后三台Redis_cluser中丢失一节点2. 在作业平台和其他Resid_custer中会有如下日志:## JOBCaused by: redis.clients.jedis.exceptions.JedisDataException: READONLY You can&#39;t write against a read only slave.    at redis.clients.jedis.Protocol.processError(Protocol.java:127)    at redis.clients.jedis.Protocol.process(Protocol.java:161)    at redis.clients.jedis.Protocol.read(Protocol.java:215)    at redis.clients.jedis.Connection.readProtocolWithCheckingBroken(Connection.java:340)    at redis.clients.jedis.Connection.getStatusCodeReply(Connection.java:239)    at redis.clients.jedis.BinaryJedis.hmset(BinaryJedis.java:886)    at org.springframework.data.redis.connection.jedis.JedisConnection.hMSet(JedisConnection.java:3085)    ... 34 common frames omitted## redis_cluster112793:S 10 Jul 11:45:50.024 * Retrying with SYNC...112793:S 10 Jul 11:45:50.025 # MASTER aborted replication with an error: ERR Can&#39;t SYNC while not connected with my master112793:S 10 Jul 11:45:51.024 * Connecting to MASTER 10.143.1.23:6379112793:S 10 Jul 11:45:51.024 * MASTER &lt;-&gt; SLAVE sync started112793:S 10 Jul 11:45:51.024 * Non blocking connect for SYNC fired the event.112793:S 10 Jul 11:45:51.025 * Master replied to PING, replication can continue...112793:S 10 Jul 11:45:51.025 * Partial resynchronization not possible (no cached master)112793:S 10 Jul 11:45:51.025 * Master does not support PSYNC or is in error state (reply: -ERR Can&#39;t SYNC while not connected with my master)112793:S 10 Jul 11:45:51.025 * Retrying with SYNC...112793:S 10 Jul 11:45:51.025 # MASTER aborted replication with an error: ERR Can&#39;t SYNC while not connected with my master112793:S 10 Jul 11:45:52.026 * Connecting to MASTER 10.143.1.23:6379112793:S 10 Jul 11:45:52.026 * MASTER &lt;-&gt; SLAVE sync started112793:S 10 Jul 11:45:52.026 # Error condition on socket for SYNC: Connection refused112793:S 10 Jul 11:45:52.618 # User requested shutdown...112793:S 10 Jul 11:45:52.618 * Removing the pid file.112793:S 10 Jul 11:45:52.618 # Redis is now ready to exit, bye bye...3. 从日志中可以看到，作业平台连接不到redis，redis自身因为集群节点不全而自动退出。</code></pre><h4 id="0x02-故障解决"><a href="#0x02-故障解决" class="headerlink" title="0x02. 故障解决"></a>0x02. 故障解决</h4><pre><code>1. 查看Redis_cluser的配置文件可以看出，是一个三个哨兵，一主两从的集群2. 现在因为虚拟机迁移而只能存活两个节点，因此需要将该集群调节为两个哨兵，一主一从的集群模式</code></pre><pre><code>1. 原本为一主两从，现在需要调节为一主一从，因此剩下的两节点有两种情况2. 一是：一主一从，二是：两个从节点，因此需要针对实际情况灵活调整</code></pre><pre><code>1. 此时需要分别修改存活节点的 $INSTALL_PATH/etc/redis/目录下的redis.conf和sentinel.conf文件2. 记得先备份原文件然后再修改，对于一主一从的需要修改从节点的sentinel.conf文件，注释其失联节点的信息即可# 假设 10.0.1.3 失联，则注释下面的两行，其余不变，然后重启集群[root@nginx-2 ~]# cat /data/bkee/etc/redis/sentinel.confport 16379bind 10.0.1.4sentinel myid cb016ffceaa30485f79f52ebf3ed3673da27fb96sentinel monitor mymaster 10.0.1.4 6379 2sentinel down-after-milliseconds mymaster 5000sentinel auth-pass mymaster :Y85u#RVfbsentinel config-epoch mymaster 4daemonize yespidfile &quot;/data/bkee/logs/sentinel.pid&quot;logfile &quot;/data/bkee/logs/sentinel.log&quot;dir &quot;/data/bkee/public/redis_cluster&quot;# Generated by CONFIG REWRITEsentinel leader-epoch mymaster 4# sentinel known-slave mymaster 10.0.1.3 6379sentinel known-slave mymaster 10.0.1.5 6379# sentinel known-sentinel mymaster 10.0.1.3 16379 1d3fcedd652c6e8fca2d1ee0fee80eebf97e1d62sentinel known-sentinel mymaster 10.0.1.5 16379 62ee9f70296f8e92170d7475c073944fa11866c9sentinel current-epoch 4</code></pre><pre><code>1. 对于两从的需要修改其中一个从节点的redis.conf文件，让其成为主节点，然后修改两者的sentinel.conf文件，注释其失联节点的信息即可# 假设 10.0.1.5是master 10.0.1.4是slave，则修改下面配置。sentinel.conf配置文件同上修改即可[root@nginx-2 ~]# cat /data/bkee/etc/redis/redis.cofdaemonize yesport 6379bind 10.0.1.5logfile &quot;/data/bkee/logs/redis/redis_cluster.log&quot;pidfile &quot;/data/bkee/logs/redis/redis_cluster.pid&quot;databases 16rdbcompression yesmaxmemory 8gbappendonly norequirepass &quot;:Y85u#RVfb&quot;masterauth &quot;:Y85u#RVfb&quot;# uncomment the following line to set redis as a slave# Generated by CONFIG REWRITEdir &quot;/data/install&quot;slaveof 10.0.1.4 6379notify-keyspace-events &quot;gxE&quot;# 使用该命令可以查看当前集群的MasterIP和端口redis-cli  -h redis_cluster.service.consul -p 16379 sentinel get-master-addr-by-name mymaster </code></pre><pre><code>1. 这样能使集群恢复正常，待节点全部恢复后，再尽快恢复原先的配置文件，恢复集群至三节点状态</code></pre><h4 id="0x03-总结"><a href="#0x03-总结" class="headerlink" title="0x03. 总结"></a>0x03. 总结</h4><pre><code>1. 此前没有接触过Redis，只是大概了解下。通过此次故障了解Redis的一些基本常识和集群的知识点2. 加深了对Redis在蓝鲸平台的作用和周围模块的关系的理解</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 蓝鲸 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Redis </tag>
+            
+            <tag> 蓝鲸 </tag>
+            
+            <tag> Redis_cluster </tag>
+            
+            <tag> 故障 </tag>
+            
+            <tag> 集群 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Apache+Apaxy搭建并美化目录浏览</title>
       <link href="/2019/09/03/apache-apaxy-da-jian-bing-mei-hua-mu-lu-liu-lan/"/>
       <url>/2019/09/03/apache-apaxy-da-jian-bing-mei-hua-mu-lu-liu-lan/</url>
@@ -51,13 +84,13 @@
       
         <tags>
             
-            <tag> ElasticSearch </tag>
-            
             <tag> 蓝鲸 </tag>
             
-            <tag> 水平扩容 </tag>
-            
             <tag> 集群 </tag>
+            
+            <tag> ElasticSearch </tag>
+            
+            <tag> 水平扩容 </tag>
             
         </tags>
       
@@ -235,11 +268,11 @@
       
         <tags>
             
+            <tag> Django </tag>
+            
             <tag> Markdown </tag>
             
             <tag> Pygments </tag>
-            
-            <tag> Django </tag>
             
         </tags>
       
@@ -264,11 +297,11 @@
       
         <tags>
             
+            <tag> Apache </tag>
+            
             <tag> 腾讯云 </tag>
             
             <tag> Django </tag>
-            
-            <tag> Apache </tag>
             
         </tags>
       
