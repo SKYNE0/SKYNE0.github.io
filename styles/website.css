@@ -1,0 +1,14 @@
+.book .book-body .page-wrapper .page-inner section.normal :not(pre)>code {
+    padding: 0.1em;
+    border-radius: 0.3em;
+    white-space: normal;
+    color: #f85353;
+    background-color: #e5e5e5;
+}
+
+.book-summary ul.summary li.header {
+    font-size: 1em;
+    padding: 0.1em;
+    font-weight: bolder;
+    color: #364149;
+}
