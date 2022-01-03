@@ -1,0 +1,38 @@
+{
+    "plugins": [
+        "theme-comscore",
+        "chapter-fold",
+        "expandable-chapters",
+        "livereload",
+        "back-to-top-button",
+        "splitter",
+        "-lunr",
+        "-search",
+        "search-pro",
+        "insert-logo",
+        "custom-favicon",
+        "tbfed-pagefooter",
+        "prism",
+        "anchor-navigation-ex",
+        "summary"
+    ],
+    "pluginsConfig": {
+        "insert-logo": {
+            "url": "/styles/images/icon.png",
+            "style": "background: none; max-height: 80px; min-height: 80px"
+            },
+        "favicon": "/styles/images/icon.png",
+        "tbfed-pagefooter": {
+            "copyright": "Copyright by <a href='https://www.skyne.cn'> SKYNE </a>",
+            "modify_label": " ",
+            "modify_format": "YYYY-MM-DD"
+            },
+        "anchor-navigation-ex": {
+            "showLevel": false, 
+            "showGoTop": false
+        }
+    },
+    "styles": {
+        "website": "styles/website.css"
+    }
+}
