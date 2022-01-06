@@ -50,3 +50,4 @@ jobs:
 - 查看`username.github.io`仓库中的 `Actions`页面即可看到正在运行的`workflows`
 - `workflow`运行失败与否都会邮件通知你
 - 至此，就可以专注于写作
+- 熟练的情况下，你甚至不需要本地预览你的`Gitbook`

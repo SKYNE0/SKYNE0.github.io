@@ -19,6 +19,7 @@
     - [MySQL 权限管理](1-2.开源中间件/3-MySQL/MySQL-权限管理.md)
 - [Redis](1-2.开源中间件/4-Redis/README.md)
 
+    - [1.安装Redis](1-2.开源中间件/4-Redis/0-1.安装Redis.md)
 - [RabbitMQ](1-2.开源中间件/5-RabbitMQ/README.md)
 
     - [RabbitMQ 基础知识](1-2.开源中间件/5-RabbitMQ/RabbitMQ-基础知识.md)
@@ -34,6 +35,8 @@
 
 - [Gitlab基础]()
 - [GitlabCicd]()
+- [Maven]()
+    - [Maven安装](3-4.DevOps/3-Maven/Maven安装.md)
 
 ## 5.开源工具
 
@@ -44,6 +47,9 @@
     - [模板与变量](4-5.开源工具/0-GitBook/3-模板与变量.md)
     - [引用与继承](4-5.开源工具/0-GitBook/4-引用与继承.md)
     - [主题插件](4-5.开源工具/0-GitBook/5-主题插件.md)
+    - [GitHub Pages](4-5.开源工具/0-GitBook/6-GitHub-Pages.md)
+    - [GitHub Actions](4-5.开源工具/0-GitBook/7-GitHub-Actions.md)
+    - [自动发布你的Gitbook](4-5.开源工具/0-GitBook/8-自动发布你的Gitbook.md)
 - [Others]()
     - [Phpmyadmin](4-5.开源工具/100-Others/phpmyadmin.md)
 - [Images]()

@@ -3,7 +3,7 @@
         "theme-comscore",
         "chapter-fold",
         "expandable-chapters",
-        "livereload",
+        "-livereload",
         "back-to-top-button",
         "splitter",
         "-lunr",
