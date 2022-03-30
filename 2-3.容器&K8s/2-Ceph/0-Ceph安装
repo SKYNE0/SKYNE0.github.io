@@ -1,0 +1,73 @@
+## Ceph安装
+
+### 1.主机环境
+
+### 2.环境配置
+
+#### 2.1配置主机名
+
+
+systemctl stop firewalld
+systemctl disable firewalld
+
+swapoff -a
+sed -i '/ swap / s/^(.*)$/#\1/g' /etc/fstab
+
+
+setenforce 0
+sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+
+ yum  install chrony 
+ systemctl start  chronyd
+ systemctl enable  chronyd
+
+
+curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-vault-8.5.2111.repo
+
+
+vim  ceph.repo
+[Ceph]
+name=Ceph packages for $basearch
+baseurl=https://mirrors.aliyun.com/ceph/rpm-octopus/el8/$basearch
+enabled=1
+gpgcheck=0
+type=rpm-md
+
+[Ceph-noarch]
+name=Ceph noarch packages
+baseurl=https://mirrors.aliyun.com/ceph/rpm-octopus/el8/noarch
+enabled=1
+gpgcheck=0
+type=rpm-md
+
+[ceph-source]
+name=Ceph source packages
+baseurl=https://mirrors.aliyun.com/ceph/rpm-octopus/el8/SRPMS
+enabled=1
+gpgcheck=0
+type=rpm-md
+
+
+
+```
+hostnamectl set-hostname cephadmin-01
+hostnamectl set-hostname cephnode-02
+hostnamectl set-hostname cephnode-03
+```
+
+cat >> /etc/hosts <<EOF
+192.168.20.101 cephadmin-01
+192.168.20.102 cephnode-02
+192.168.20.103 cephnode-03
+EOF
+
+
+ssh-keygen -t rsa
+ssh-copy-id root@cephnode-01
+ssh-copy-id root@cephnode-02
+ssh-copy-id root@cephnode-03
+
+
+
+
+### 安装
