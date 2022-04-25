@@ -1,0 +1,32 @@
+## 安装Docker
+
+### 1.CentOS7.x
+- 移除旧版本(未安装可略过): `yum remove docker  docker-common docker-selinux docker-engine`
+- 安装依赖: `yum install -y yum-utils device-mapper-persistent-data lvm2`
+- 添加`Yum`源: `yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo`
+- 查看可用版本: `yum list docker-ce --showduplicates | sort -r`
+- 安装需要的版本: `yum install docker-ce-版本号`
+- `systemctl start docker`
+- `systemctl enable docker`
+
+### 3.配置国内镜像源
+- 配置国内源、存储驱动、日志大小限制
+
+```
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "1000m"
+        },
+    "storage-driver": "overlay2",
+    "storage-opts": [
+        "overlay2.override_kernel_check=true"
+        ],
+    "registry-mirrors": [
+        "https://registry.docker-cn.com",
+        "http://hub-mirror.c.163.com",
+        "https://docker.mirrors.ustc.edu.cn"
+        ]
+}
+```

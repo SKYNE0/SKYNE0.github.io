@@ -2,7 +2,8 @@
 ## 1.Linux基础
 
 - [LVM扩容](0-1.Linux基础/1-LVM扩容.md)
-- [Firewalld](0-1.Linux基础/Firewalld.md)
+- [Firewalld常用命令](0-1.Linux基础/Firewalld常用命令.md)
+- [Systemd常用命令](0-1.Linux基础/Systemd常用命令.md)
 
 ## 2.开源中间件
 
@@ -10,9 +11,11 @@
 
     - [Translog文件损坏](1-2.开源中间件/0-ES/Translog文件损坏.md)
     - [数据节点下线](1-2.开源中间件/0-ES/数据节点下线.md)
+    - [禁止自动创建特定索引](1-2.开源中间件/0-ES/禁止自动创建特定索引.md)
 - [Nginx](1-2.开源中间件/1-Nginx/README.md)
 
     - [Nginx BasicAuth](1-2.开源中间件/1-Nginx/Nginx-BasicAuth.md)
+    - [Nginx Limit Rate](1-2.开源中间件/1-Nginx/Nginx-Limit-Rate.md)
 - [MySQL](1-2.开源中间件/3-MySQL/README.md)
 
     - [MySQL Base](1-2.开源中间件/3-MySQL/MySQL-Base.md)
@@ -22,7 +25,13 @@
     - [1.安装Redis](1-2.开源中间件/4-Redis/0-1.安装Redis.md)
 - [RabbitMQ](1-2.开源中间件/5-RabbitMQ/README.md)
 
-    - [RabbitMQ 基础知识](1-2.开源中间件/5-RabbitMQ/RabbitMQ-基础知识.md)
+    - [RabbitMQ 安装](1-2.开源中间件/5-RabbitMQ/0-RabbitMQ-安装.md)
+    - [RabbitMQ 基础概念](1-2.开源中间件/5-RabbitMQ/1-RabbitMQ-基础概念.md)
+    - [RabbitMQ 权限体系](1-2.开源中间件/5-RabbitMQ/2-RabbitMQ-权限体系.md)
+    - [RabbitMQ 压测](1-2.开源中间件/5-RabbitMQ/3-RabbitMQ-压测.md)
+    - [RabbitMQ 最佳实践](1-2.开源中间件/5-RabbitMQ/4-RabbitMQ-最佳实践.md)
+    - [RabbitMQ PrefetchCount(预取数)](1-2.开源中间件/5-RabbitMQ/5-RabbitMQ-PrefetchCount(预取数).md)
+    - [RabbitMQ 集群搭建](1-2.开源中间件/5-RabbitMQ/6-RabbitMQ-集群搭建.md)
 - [Kafka](1-2.开源中间件/6-Kafka/README.md)
 
 
@@ -30,13 +39,20 @@
 
 - [Docker基础]()
 - [K8s基础]()
+- [Ceph]()
 
 ## 4.DevOps
 
 - [Gitlab基础]()
+    - [GitLab安装](3-4.DevOps/0-Gitlab基础/0-GitLab安装.md)
+    - [GitLab未授权漏洞RCE](3-4.DevOps/0-Gitlab基础/GitLab未授权漏洞RCE.md)
+    - [Gitlab API 创建用户](3-4.DevOps/0-Gitlab基础/Gitlab API 创建用户.md)
 - [GitlabCicd]()
+- [Docker]()
+- [监控三剑客]()
+    - [Loki采集Nginx日志](3-4.DevOps/3-监控三剑客/Loki采集Nginx日志.md)
 - [Maven]()
-    - [Maven安装](3-4.DevOps/3-Maven/Maven安装.md)
+    - [Maven安装](3-4.DevOps/4-Maven/Maven安装.md)
 
 ## 5.开源工具
 
@@ -50,6 +66,12 @@
     - [GitHub Pages](4-5.开源工具/0-GitBook/6-GitHub-Pages.md)
     - [GitHub Actions](4-5.开源工具/0-GitBook/7-GitHub-Actions.md)
     - [自动发布你的Gitbook](4-5.开源工具/0-GitBook/8-自动发布你的Gitbook.md)
+- [JumpServer]()
+    - [Jumpserver API 添加删除用户](4-5.开源工具/2-JumpServer/Jumpserver API 添加删除用户.md)
 - [Others]()
-    - [Phpmyadmin](4-5.开源工具/100-Others/phpmyadmin.md)
+    - [ElasticSearch Dump](4-5.开源工具/99-Others/0-ElasticSearch-Dump.md)
+    - [Cerebro](4-5.开源工具/99-Others/Cerebro.md)
+    - [NFS](4-5.开源工具/99-Others/NFS.md)
+    - [PhpMyAdmin](4-5.开源工具/99-Others/PhpMyAdmin.md)
+    - [Supervisor](4-5.开源工具/99-Others/Supervisor.md)
 - [Images]()
