@@ -13,7 +13,7 @@
 - 强烈建议安装`erlang:24`和`rabbitmq:3.8.16`以上版本
 - `erlang:24`引入了`JIT`来提高性能: https://blog.rabbitmq.com/posts/2021/03/erlang-24-support-roadmap
 - 官方称有`35%~55%`的性能提升
-- 但`CentOS7`需要自己编译`erlang:24`
+- 但`CentOS7`需要自己编译`erlang:24`,建议使用Docker来部署
 
 #### 1.2容器方式
 - 安装稳定版本的`Docker`:
@@ -24,7 +24,6 @@ curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 # 配置国内源、存储驱动、日志大小限制
 vim /etc/docker/daemon.json
 {
-    "exec-opts": ["native.cgroupdriver=systemd"],
     "log-driver": "json-file",
     "log-opts": {
         "max-size": "1000m"

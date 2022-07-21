@@ -2,6 +2,7 @@
 ## 1.Linux基础
 
 - [LVM扩容](0-1.Linux基础/1-LVM扩容.md)
+- [CentOS7升级内核版本](0-1.Linux基础/CentOS7升级内核版本.md)
 - [Firewalld常用命令](0-1.Linux基础/Firewalld常用命令.md)
 - [Systemd常用命令](0-1.Linux基础/Systemd常用命令.md)
 
@@ -40,6 +41,9 @@
 - [Docker基础]()
 - [K8s基础]()
 - [Ceph]()
+- [Rancher]()
+    - [K3s高可用安装](2-3.容器&K8s/3-Rancher/0-K3s高可用安装.md)
+    - [Rancher高可用安装(K3s)](2-3.容器&K8s/3-Rancher/1-Rancher高可用安装(K3s).md)
 
 ## 4.DevOps
 
