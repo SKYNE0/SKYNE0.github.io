@@ -1,0 +1,12 @@
+imgs=(
+goharbor/chartmuseum-photon:v2.5.0
+goharbor/harbor-core:v2.5.0
+goharbor/harbor-db:v2.5.0
+goharbor/harbor-jobservice:v2.5.0
+goharbor/notary-server-photon:v2.5.0
+goharbor/notary-signer-photon:v2.5.0
+goharbor/harbor-portal:v2.5.0
+goharbor/redis-photon:v2.5.0
+goharbor/registry-photon:v2.5.0
+goharbor/trivy-adapter-photon:v2.5.0
+)
